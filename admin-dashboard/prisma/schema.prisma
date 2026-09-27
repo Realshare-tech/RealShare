@@ -63,6 +63,8 @@ model Profile {
   messages                  Message[]
   developer                 Developer?                @relation(fields: [developer_id], references: [id])
   adminLoginLogs            AdminLoginLog[]
+  delegateRequests          DelegateAccessSession[] @relation("DelegateRequester")
+  delegateTargets           DelegateAccessSession[] @relation("DelegateTarget")
 
   @@map("profiles")
 }
@@ -731,4 +733,66 @@ model AdminLoginLog {
   @@index([user_id])
   @@index([created_at])
   @@map("admin_login_logs")
+}
+
+/// Delegate Access: an admin/employee requests to act on behalf of a user.
+/// A 6-digit alphanumeric code is generated and shown in the user's app.
+/// Once the user shares the code, the admin enters it to activate the session.
+model DelegateAccessSession {
+  id                String    @id @default(uuid()) @db.VarChar(36)
+  /// The admin/employee who is requesting access
+  requester_id      String    @db.VarChar(128)
+  requester_role    String    @db.VarChar(20)
+  requester_name    String?   @db.VarChar(255)
+  /// The target user whose profile is being accessed
+  target_user_id    String    @db.VarChar(128)
+  target_user_role  String    @db.VarChar(20)
+  target_user_name  String?   @db.VarChar(255)
+  /// 6-digit alphanumeric verification code
+  access_code       String    @db.VarChar(6)
+  /// "pending" | "active" | "expired" | "completed"
+  status            String    @default("pending") @db.VarChar(20)
+  /// Reason / ticket reference for the access request
+  reason            String?   @db.Text
+  /// When the code expires (10 minutes from creation)
+  code_expires_at   DateTime  @db.Timestamptz(6)
+  /// When the session was activated (code verified)
+  activated_at      DateTime? @db.Timestamptz(6)
+  /// When the session ended
+  ended_at          DateTime? @db.Timestamptz(6)
+  /// IP address of the requester
+  ip_address        String?   @db.VarChar(64)
+  created_at        DateTime  @default(now()) @db.Timestamptz(6)
+
+  requester   Profile @relation("DelegateRequester", fields: [requester_id], references: [id])
+  target_user Profile @relation("DelegateTarget", fields: [target_user_id], references: [id])
+  logs        DelegateAccessLog[]
+
+  @@index([requester_id])
+  @@index([target_user_id])
+  @@index([access_code, status])
+  @@index([created_at])
+  @@map("delegate_access_sessions")
+}
+
+/// Every action performed during a delegate access session is logged here.
+model DelegateAccessLog {
+  id          String   @id @default(uuid()) @db.VarChar(36)
+  session_id  String   @db.VarChar(36)
+  /// What the admin did: "UPDATE_PROFILE", "CREATE_PROPERTY", "EDIT_PROPERTY", etc.
+  action      String   @db.VarChar(100)
+  /// The entity affected
+  entity_type String   @db.VarChar(100)
+  entity_id   String?  @db.VarChar(128)
+  /// Before/after snapshots for accountability
+  before      Json?
+  after       Json?
+  details     String?  @db.Text
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  session DelegateAccessSession @relation(fields: [session_id], references: [id])
+
+  @@index([session_id])
+  @@index([created_at])
+  @@map("delegate_access_logs")
 }

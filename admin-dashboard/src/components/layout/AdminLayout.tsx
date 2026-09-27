@@ -42,6 +42,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       { name: "Deleted Accounts", path: "/deleted-users", icon: "🗑️" },
       { name: "Audit Logs", path: "/audit-logs", icon: "📝" },
       { name: "Security Login Logs", path: "/login-logs", icon: "🛡️" },
+      { name: "Delegate Access", path: "/delegate-access", icon: "🔑" },
     ];
 
     // Superadmin-only destinations. Audit logs record what admins and employees
@@ -57,16 +58,16 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
 
     const dept = userProfile?.employee_department;
     if (dept === 'sales') {
-      return visible(allItems.filter(item => ['/', '/properties', '/developers', '/buyers', '/agents', '/referrals', '/property-requests'].includes(item.path)));
+      return visible(allItems.filter(item => ['/', '/properties', '/developers', '/buyers', '/agents', '/referrals', '/property-requests', '/delegate-access'].includes(item.path)));
     }
     if (dept === 'support') {
-      return visible(allItems.filter(item => ['/', '/buyers', '/tickets', '/messages', '/services-inquiries', '/contact-messages', '/partner-applications', '/notifications'].includes(item.path)));
+      return visible(allItems.filter(item => ['/', '/buyers', '/tickets', '/messages', '/services-inquiries', '/contact-messages', '/partner-applications', '/notifications', '/delegate-access'].includes(item.path)));
     }
     if (dept === 'accounts') {
-      return visible(allItems.filter(item => ['/', '/ledger', '/approvals', '/agents', '/services'].includes(item.path)));
+      return visible(allItems.filter(item => ['/', '/ledger', '/approvals', '/agents', '/services', '/delegate-access'].includes(item.path)));
     }
     if (dept === 'tech' || dept === 'tech_support') {
-      return visible(allItems.filter(item => ['/', '/tickets', '/settings', '/deleted-users', '/notifications', '/cms', '/contact-messages'].includes(item.path)));
+      return visible(allItems.filter(item => ['/', '/tickets', '/settings', '/deleted-users', '/notifications', '/cms', '/contact-messages', '/delegate-access'].includes(item.path)));
     }
 
     // Default fallback: just show overview if department is unrecognized

@@ -55,6 +55,11 @@ export default function ProfileScreen() {
   const [callbackMessage, setCallbackMessage] = useState('');
   const [isSubmittingInquiry, setIsSubmittingInquiry] = useState(false);
 
+  // Delegate Access States
+  const [delegateCode, setDelegateCode] = useState<string | null>(null);
+  const [delegateExpiry, setDelegateExpiry] = useState<number>(0);
+  const [delegateLoading, setDelegateLoading] = useState(false);
+
   const handleCallSales = () => {
     Linking.openURL('tel:+919581728172').catch(() => {
       Alert.alert('Sales Contact', 'Call our sales team directly at +91 95 8172 8172');
@@ -133,6 +138,41 @@ export default function ProfileScreen() {
       }
     })();
   }, []);
+
+  // Generate Delegate Access Code (user-initiated)
+  const generateDelegateCode = async () => {
+    try {
+      setDelegateLoading(true);
+      const currentUser = auth.currentUser;
+      if (!currentUser) return;
+      const token = await currentUser.getIdToken();
+      const res = await fetch(`${getApiUrl()}/api/delegate-access/request`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      });
+      const data = await res.json();
+      if (data.success) {
+        setDelegateCode(data.access_code);
+        setDelegateExpiry(60);
+      } else {
+        Alert.alert('Error', data.error || 'Failed to generate code');
+      }
+    } catch (err) {
+      Alert.alert('Error', 'Failed to generate delegate access code');
+    } finally {
+      setDelegateLoading(false);
+    }
+  };
+
+  // Countdown timer for delegate code
+  useEffect(() => {
+    if (delegateExpiry <= 0) {
+      if (delegateCode) setDelegateCode(null);
+      return;
+    }
+    const timer = setTimeout(() => setDelegateExpiry(prev => prev - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [delegateExpiry]);
 
   // OTP Verification States
   const [isOtpModalVisible, setOtpModalVisible] = useState(false);
@@ -1294,6 +1334,62 @@ export default function ProfileScreen() {
           </View>
         </Animated.View>
 
+        {/* ─── GRANT DELEGATE ACCESS ─── */}
+        <Animated.View style={[
+          styles.sectionWrapper,
+          { opacity: cardsAnim, transform: [{ translateY: cardsTranslateY }] }
+        ]}>
+          <View style={styles.card}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+              <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(59, 130, 246, 0.1)', justifyContent: 'center', alignItems: 'center', marginRight: 12 }}>
+                <Ionicons name="key-outline" size={20} color="#3B82F6" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 16, fontWeight: '700', color: Neutrals.obsidian }}>Delegate Access</Text>
+                <Text style={{ fontSize: 12, color: Neutrals.slate }}>Let RealShare support access your profile</Text>
+              </View>
+            </View>
+
+            {delegateCode && delegateExpiry > 0 ? (
+              <View style={{ alignItems: 'center' }}>
+                <Text style={{ fontSize: 11, color: '#94A3B8', textTransform: 'uppercase', fontWeight: '600', letterSpacing: 1, marginBottom: 6 }}>
+                  Your Access Code
+                </Text>
+                <View style={{ backgroundColor: '#F8FAFC', borderRadius: 12, borderWidth: 2, borderColor: '#E2E8F0', borderStyle: 'dashed', paddingHorizontal: 28, paddingVertical: 14, marginBottom: 10 }}>
+                  <Text style={{ fontSize: 28, fontWeight: '800', color: '#1E293B', letterSpacing: 8, textAlign: 'center', fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' }}>
+                    {delegateCode}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                  <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: delegateExpiry > 15 ? '#22C55E' : '#EF4444', marginRight: 6 }} />
+                  <Text style={{ fontSize: 13, fontWeight: '600', color: delegateExpiry > 15 ? '#22C55E' : '#EF4444' }}>
+                    Expires in {delegateExpiry}s
+                  </Text>
+                </View>
+                <Text style={{ fontSize: 11, color: '#94A3B8', textAlign: 'center', lineHeight: 16 }}>
+                  Share this code with the RealShare representative. Do NOT share if you did not request assistance.
+                </Text>
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={{ backgroundColor: '#1E293B', paddingVertical: 14, borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
+                onPress={generateDelegateCode}
+                disabled={delegateLoading}
+                activeOpacity={0.8}
+              >
+                {delegateLoading ? (
+                  <ActivityIndicator size="small" color="#FFF" />
+                ) : (
+                  <>
+                    <Ionicons name="shield-checkmark" size={18} color="#FFF" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#FFF', fontWeight: '600', fontSize: 15 }}>Grant Delegate Access</Text>
+                  </>
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
+        </Animated.View>
+
         {/* ─── LOGOUT & DELETE ACCOUNT ─── */}
         <View style={styles.sectionWrapper}>
           <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout} activeOpacity={0.8}>
@@ -1306,6 +1402,7 @@ export default function ProfileScreen() {
         </View>
 
       </ScrollView>
+
 
       {/* OTP Verification Modal */}
       <Modal
