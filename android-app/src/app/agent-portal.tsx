@@ -270,8 +270,8 @@ export default function AgentPortalScreen({ isEmbedded = false }: { isEmbedded?:
             </View>
           </View>
           <View style={styles.profileDetails}>
-            <Text style={styles.agentName}>{dashboardData?.agentName || 'Agent Partner'}</Text>
-            <Text style={styles.agencyName}>{dashboardData?.agencyName || 'Realshare Enterprise'}</Text>
+            <Text style={styles.agentName}>{dashboardData?.agentName || 'Agent'}</Text>
+            <Text style={styles.agencyName}>{dashboardData?.agencyName || 'Realshare Agent'}</Text>
             <View style={styles.tierBadge}>
               <Text style={styles.tierText}>★ {dashboardData?.commissionRate || 'Platinum Tier (2.5%)'}</Text>
             </View>

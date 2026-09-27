@@ -169,7 +169,7 @@ export function HeroCarousel() {
                 transform: [{ translateY: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [15, 0] }) }] 
               }]}>
                 <Text style={[styles.title, isWide && styles.titleDesktop]}>{slide.title}</Text>
-                {!!slide.subtitle && <Text style={[styles.subtitle, isWide && styles.subtitleDesktop]}>{slide.subtitle}</Text>}
+                {!!slide.subtitle && <Text style={[styles.subtitle, isWide && styles.subtitleDesktop]} numberOfLines={2}>{slide.subtitle}</Text>}
                 <GoldButton
                   title="Explore Properties"
                   onPress={() => router.push((slide.link_url || '/search') as any)}

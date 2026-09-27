@@ -273,9 +273,7 @@ export function FeaturedPropertiesSlider({ properties }: FeaturedPropertiesSlide
         <Image source={{ uri: getImg(activeMobileSlide) }} style={[StyleSheet.absoluteFill, { borderRadius: Radius.lg }]} contentFit="cover" />
         <LinearGradient colors={['transparent', 'rgba(0,0,0,0.35)', 'rgba(0,0,0,0.9)']} style={[StyleSheet.absoluteFill, { borderRadius: Radius.lg }]} />
         
-        <View style={styles.badgeContainer}>
-          <Text style={styles.badgeText}>FEATURED</Text>
-        </View>
+
 
         <View style={styles.content}>
           <Text style={styles.title}>{activeMobileSlide.title}</Text>
