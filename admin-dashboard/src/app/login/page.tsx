@@ -5,13 +5,15 @@ import { signInWithCustomToken } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { SecurityCapture } from '@/components/auth/SecurityCapture';
 
 function LoginForm() {
   const [identifier, setIdentifier] = useState('');
   const [otp, setOtp] = useState('');
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [sessionUser, setSessionUser] = useState<{ id: string, token: string, role: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
   const router = useRouter();
@@ -115,10 +117,12 @@ function LoginForm() {
       const roleData = await roleRes.json();
       
       if (roleData.success && roleData.profile) {
-        if (roleData.profile.role === 'admin' || roleData.profile.role === 'superadmin') {
-          // Successfully authenticated as admin or superadmin
+        if (roleData.profile.role === 'superadmin') {
           setSuccess('Login successful! Redirecting...');
           router.push('/');
+        } else if (roleData.profile.role === 'admin') {
+          setSessionUser({ id: userCredential.user.uid, token, role: 'admin' });
+          setStep(3);
         } else {
           await auth.signOut();
           setError('Access Denied. You do not have administrator privileges.');
@@ -133,6 +137,46 @@ function LoginForm() {
       setLoading(false);
     }
   };
+
+  const handleSecurityComplete = async (data: { latitude: number | null; longitude: number | null; photo_url: string | null }) => {
+    if (!sessionUser) return;
+    try {
+      setLoading(true);
+      await fetch('/api/auth/login-log', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${sessionUser.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      setSuccess('Login verified! Redirecting...');
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
+    } catch (err: any) {
+      console.error(err);
+      setError('Failed to log verification data, but continuing...');
+      router.push('/');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (step === 3 && sessionUser) {
+    return (
+      <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F8FAFC', padding: '16px' }}>
+        <div style={{ background: '#FFF', padding: 'clamp(22px, 6vw, 40px)', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.05)', width: '100%', maxWidth: '400px' }}>
+          {error && <div style={{ background: '#FEF2F2', color: '#DC2626', padding: '12px', borderRadius: '8px', fontSize: '14px', marginBottom: '20px', border: '1px solid #FCA5A5' }}>{error}</div>}
+          <SecurityCapture 
+            userId={sessionUser.id} 
+            onComplete={handleSecurityComplete}
+            onError={(err) => setError(err)}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F8FAFC', padding: '16px' }}>

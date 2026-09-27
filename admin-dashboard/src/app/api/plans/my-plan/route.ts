@@ -33,12 +33,23 @@ export async function GET(req: Request) {
       }
     });
 
+    const hasUsedFreePlan = await prisma.userSubscription.count({
+      where: {
+        user_id: uid,
+        plan: {
+          tier: 'REGULAR',
+          price: 0
+        }
+      }
+    }) > 0;
+
     if (!subscription) {
-       return NextResponse.json({ hasPlan: false });
+       return NextResponse.json({ hasPlan: false, hasUsedFreePlan });
     }
 
     return NextResponse.json({
       hasPlan: true,
+      hasUsedFreePlan,
       subscription: {
         id: subscription.id,
         tier: subscription.plan.tier,

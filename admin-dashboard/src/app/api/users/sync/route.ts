@@ -97,7 +97,43 @@ export async function POST(req: Request) {
       }
     });
 
-    return NextResponse.json({ success: true, profile });
+    const activeSubscription = await prisma.userSubscription.findFirst({
+      where: {
+        user_id: decodedToken.uid,
+        status: 'active'
+      },
+      include: { plan: true },
+      orderBy: { created_at: 'desc' }
+    });
+
+    const hasUsedFreePlan = await prisma.userSubscription.count({
+      where: {
+        user_id: decodedToken.uid,
+        plan: { tier: 'REGULAR', price: 0 }
+      }
+    }) > 0;
+
+    let subscriptionObj = null;
+    if (activeSubscription) {
+      subscriptionObj = {
+        id: activeSubscription.id,
+        tier: activeSubscription.plan.tier,
+        plan_name: `${activeSubscription.plan.tier} (${activeSubscription.plan.role_type})`,
+        postings_limit: activeSubscription.plan.postings_limit,
+        postings_used: activeSubscription.postings_used,
+        expires_at: activeSubscription.expires_at,
+        status: activeSubscription.status
+      };
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      profile: {
+        ...profile,
+        subscription: subscriptionObj,
+        has_used_free_plan: hasUsedFreePlan
+      }
+    });
   } catch (error: any) {
     console.error('Error syncing user:', error);
     return NextResponse.json(

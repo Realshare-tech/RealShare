@@ -40,12 +40,13 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       { name: "Subscription Plans", path: "/subscription-plans", icon: "💎" },
       { name: "System Settings", path: "/settings", icon: "⚙️" },
       { name: "Deleted Accounts", path: "/deleted-users", icon: "🗑️" },
-      { name: "Audit Logs", path: "/audit-logs", icon: "📝" }, // New audit log page
+      { name: "Audit Logs", path: "/audit-logs", icon: "📝" },
+      { name: "Security Login Logs", path: "/login-logs", icon: "🛡️" },
     ];
 
     // Superadmin-only destinations. Audit logs record what admins and employees
     // did, so a plain admin must not see them — the route enforces this too.
-    const SUPERADMIN_ONLY = ['/audit-logs'];
+    const SUPERADMIN_ONLY = ['/audit-logs', '/login-logs'];
     const isSuperAdmin = userProfile?.role === 'superadmin';
     const visible = (items: typeof allItems) =>
       isSuperAdmin ? items : items.filter((item) => !SUPERADMIN_ONLY.includes(item.path));

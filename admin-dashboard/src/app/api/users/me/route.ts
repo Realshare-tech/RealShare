@@ -20,7 +20,40 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
     }
 
-    return NextResponse.json(profile);
+    const activeSubscription = await prisma.userSubscription.findFirst({
+      where: {
+        user_id: userId,
+        status: 'active'
+      },
+      include: { plan: true },
+      orderBy: { created_at: 'desc' }
+    });
+
+    const hasUsedFreePlan = await prisma.userSubscription.count({
+      where: {
+        user_id: userId,
+        plan: { tier: 'REGULAR', price: 0 }
+      }
+    }) > 0;
+
+    let subscriptionObj = null;
+    if (activeSubscription) {
+      subscriptionObj = {
+        id: activeSubscription.id,
+        tier: activeSubscription.plan.tier,
+        plan_name: `${activeSubscription.plan.tier} (${activeSubscription.plan.role_type})`,
+        postings_limit: activeSubscription.plan.postings_limit,
+        postings_used: activeSubscription.postings_used,
+        expires_at: activeSubscription.expires_at,
+        status: activeSubscription.status
+      };
+    }
+
+    return NextResponse.json({
+      ...profile,
+      subscription: subscriptionObj,
+      has_used_free_plan: hasUsedFreePlan
+    });
   } catch (error: any) {
     return NextResponse.json(
       { error: 'Internal Server Error' },
