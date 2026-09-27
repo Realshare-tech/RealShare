@@ -168,6 +168,31 @@ export default function BuilderPortalScreen({ isEmbedded = false }: { isEmbedded
     );
   }
 
+  const isSubscriptionExpired = !user?.subscription || new Date(user.subscription.expires_at).getTime() < Date.now();
+
+  if (isSubscriptionExpired) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center', padding: 24, backgroundColor: '#F8FAFC' }]}>
+        <Ionicons name="lock-closed" size={64} color={GoldSystem.primaryGold} style={{ marginBottom: 16 }} />
+        <Text style={{ fontSize: 24, color: Neutrals.obsidian, fontWeight: 'bold', marginBottom: 12 }}>Subscription Expired</Text>
+        <Text style={{ color: Neutrals.slate, textAlign: 'center', fontSize: 16, marginBottom: 24 }}>
+          Your active plan has expired. Please upgrade your subscription to access your builder profile and dashboard.
+        </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: GoldSystem.primaryGold,
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderRadius: 8,
+          }}
+          onPress={() => router.push('/profile')}
+        >
+          <Text style={{ color: Neutrals.obsidian, fontWeight: 'bold', fontSize: 16 }}>Upgrade Plan</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: '#F8FAFC' }}>
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>

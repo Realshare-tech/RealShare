@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Platform, KeyboardAvoidingView, ScrollView, Image, Modal, ImageBackground, Linking } from 'react-native';
 import { signOut, signInWithCustomToken } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { AuthSplitLayout } from '@/components/layout/AuthSplitLayout';
 import { Neutrals, GoldSystem, Radius, Typography, Shadows } from '@/constants/design';
 import { Ionicons } from '@expo/vector-icons';
@@ -72,6 +72,13 @@ export default function SignUpScreen() {
   const [role, setRole] = useState<'buyer' | 'investor' | 'agent' | 'builder'>('buyer');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const { ref } = useLocalSearchParams();
+  useEffect(() => {
+    if (ref && typeof ref === 'string') {
+      setReferralCode(ref);
+    }
+  }, [ref]);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [requireKycOnSignup, setRequireKycOnSignup] = useState(true);
   

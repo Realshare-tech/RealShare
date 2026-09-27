@@ -25,9 +25,10 @@ interface PlanSelectorProps {
   onSelectPlan: (planId: string, couponCode: string | null) => void;
   currentPlanId?: string;
   isUpgrade?: boolean;
+  hasUsedFreePlan?: boolean;
 }
 
-export default function PlanSelector({ role, onSelectPlan, currentPlanId, isUpgrade = false }: PlanSelectorProps) {
+export default function PlanSelector({ role, onSelectPlan, currentPlanId, isUpgrade = false, hasUsedFreePlan = false }: PlanSelectorProps) {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
   const [couponCode, setCouponCode] = useState('');
@@ -61,7 +62,11 @@ export default function PlanSelector({ role, onSelectPlan, currentPlanId, isUpgr
       if (res.ok) {
         const data = await res.json();
         if (data.enabled && data.plans) {
-           setPlans(data.plans);
+           let availablePlans = data.plans as Plan[];
+           if (hasUsedFreePlan) {
+             availablePlans = availablePlans.filter(p => p.tier.toUpperCase() !== 'REGULAR' && parseFloat(p.price) > 0);
+           }
+           setPlans(availablePlans);
         }
       }
     } catch (e) {

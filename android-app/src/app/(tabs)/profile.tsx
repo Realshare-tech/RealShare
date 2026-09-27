@@ -13,6 +13,7 @@ import {
   Animated,
   Dimensions,
   Linking,
+  Share,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
@@ -194,6 +195,19 @@ export default function ProfileScreen() {
       }
     } catch (error) {
       console.error('Error picking image:', error);
+    }
+  };
+
+  const shareReferralCode = async () => {
+    if (!user?.referral_code) return;
+    const refLink = `https://realshare.in/sign-up?ref=${user.referral_code}`;
+    try {
+      await Share.share({
+        message: `Join RealShare using my referral code! Sign up here: ${refLink}`,
+        url: refLink,
+      });
+    } catch (error: any) {
+      console.log('Error sharing referral link:', error);
     }
   };
 
@@ -797,6 +811,7 @@ export default function ProfileScreen() {
                     role={user.role} 
                     currentPlanId={user?.subscription?.id}
                     isUpgrade={true}
+                    hasUsedFreePlan={user.has_used_free_plan}
                     onSelectPlan={async (planId, couponCode) => {
                        try {
                          setLoading(true);
@@ -963,6 +978,43 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
               </View>
             )}
+          </Animated.View>
+        )}
+
+        {/* ─── REFER & EARN CARD (AGENTS & BUILDERS) ─── */}
+        {(user?.role === 'builder' || user?.role === 'agent') && user?.referral_code && (
+          <Animated.View style={[
+            styles.sectionWrapper,
+            { opacity: cardsAnim, transform: [{ translateY: cardsTranslateY }] }
+          ]}>
+            <View style={styles.card}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+                <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: 'rgba(212, 175, 55, 0.15)', justifyContent: 'center', alignItems: 'center', marginRight: 12 }}>
+                  <Ionicons name="gift-outline" size={20} color={GoldSystem.primaryGold} />
+                </View>
+                <View>
+                  <Text style={{ fontSize: 18, fontWeight: '700', color: Neutrals.obsidian }}>Refer & Earn</Text>
+                  <Text style={{ fontSize: 13, color: Neutrals.slate }}>Invite other Agents, Builders, or Investors</Text>
+                </View>
+              </View>
+
+              <View style={{ backgroundColor: '#F8FAFC', padding: 16, borderRadius: 12, borderStyle: 'dashed', borderWidth: 1, borderColor: '#CBD5E1', marginBottom: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View>
+                  <Text style={{ fontSize: 12, color: Neutrals.slate, marginBottom: 4, textTransform: 'uppercase', fontWeight: '600' }}>Your Referral Code</Text>
+                  <Text style={{ fontSize: 20, fontWeight: 'bold', color: Neutrals.obsidian, letterSpacing: 2 }}>{user.referral_code}</Text>
+                </View>
+                <Ionicons name="copy-outline" size={20} color={Neutrals.slate} />
+              </View>
+
+              <TouchableOpacity 
+                style={{ backgroundColor: Neutrals.obsidian, paddingVertical: 14, borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
+                onPress={shareReferralCode}
+                activeOpacity={0.8}
+              >
+                <Ionicons name="share-social" size={18} color="#FFFFFF" style={{ marginRight: 8 }} />
+                <Text style={{ color: '#FFFFFF', fontWeight: '600', fontSize: 15 }}>Share Referral Link</Text>
+              </TouchableOpacity>
+            </View>
           </Animated.View>
         )}
 

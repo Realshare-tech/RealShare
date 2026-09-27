@@ -243,6 +243,31 @@ export default function AgentPortalScreen({ isEmbedded = false }: { isEmbedded?:
     );
   }
 
+  const isSubscriptionExpired = !user?.subscription || new Date(user.subscription.expires_at).getTime() < Date.now();
+
+  if (isSubscriptionExpired) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center', padding: 24, backgroundColor: '#0F172A' }]}>
+        <Ionicons name="lock-closed" size={64} color="#D4AF37" style={{ marginBottom: 16 }} />
+        <Text style={{ fontSize: 24, color: '#FFFFFF', fontWeight: 'bold', marginBottom: 12 }}>Subscription Expired</Text>
+        <Text style={{ color: '#94A3B8', textAlign: 'center', fontSize: 16, marginBottom: 24 }}>
+          Your active plan has expired. Please upgrade your subscription to access your agent profile and dashboard.
+        </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#D4AF37',
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderRadius: 8,
+          }}
+          onPress={() => router.push('/profile')}
+        >
+          <Text style={{ color: '#0F172A', fontWeight: 'bold', fontSize: 16 }}>Upgrade Plan</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
       {/* Premium Header */}

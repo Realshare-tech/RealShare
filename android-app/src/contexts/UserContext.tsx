@@ -22,7 +22,9 @@ export type UserProfile = {
     document_type: string;
     verification_status: string;
   }>;
+  referral_code?: string | null;
   is_approved?: boolean;
+  has_used_free_plan?: boolean;
   subscription?: {
     id?: string;
     tier: string;
