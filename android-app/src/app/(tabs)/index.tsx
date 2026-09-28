@@ -417,10 +417,14 @@ const styles = StyleSheet.create({
   headerIconBtn: {
     padding: 8,
     marginLeft: -8,
+    zIndex: 1,
+    marginTop: 8,
   },
   headerIconBtnRight: {
     padding: 8,
     marginRight: -8,
+    zIndex: 1,
+    marginTop: 8,
   },
   headerIcon: {
     fontSize: 24,
@@ -431,7 +435,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 0,
-    paddingTop: 18, // shifts the logo down sufficiently to clear dynamic islands/notches
+    paddingTop: 12, 
   },
   logoImage: {
     width: 220,

@@ -86,18 +86,11 @@ export function HeroCarousel() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await resilientFetch(`${getApiUrl()}/api/properties?is_hero=true`);
+        const res = await resilientFetch(`${getApiUrl()}/api/cms/banners`);
         if (res.ok && !cancelled) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
-            const propBanners = data.map((p: any) => ({
-              id: p.id,
-              title: p.title,
-              subtitle: p.short_description || p.locality,
-              image_url: (p.images && p.images[0]?.image_url) || p.image_url || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=400&q=80',
-              link_url: `/property/${p.id}`,
-            }));
-            setSlides(propBanners);
+            setSlides(data);
             return;
           }
         }
@@ -169,7 +162,7 @@ export function HeroCarousel() {
                 transform: [{ translateY: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [15, 0] }) }] 
               }]}>
                 <Text style={[styles.title, isWide && styles.titleDesktop]}>{slide.title}</Text>
-                {!!slide.subtitle && <Text style={[styles.subtitle, isWide && styles.subtitleDesktop]} numberOfLines={2}>{slide.subtitle}</Text>}
+                {!!slide.subtitle && <Text style={[styles.subtitle, isWide && styles.subtitleDesktop]}>{slide.subtitle}</Text>}
                 <GoldButton
                   title="Explore Properties"
                   onPress={() => router.push((slide.link_url || '/search') as any)}

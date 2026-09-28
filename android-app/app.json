@@ -9,8 +9,11 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "bundleIdentifier": "com.realshare.app",
+      "buildNumber": "12",
       "icon": "./assets/images/realshare-logo.png",
       "googleServicesFile": "./GoogleService-Info.plist",
+      "supportsTablet": true,
+      "requireFullScreen": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -54,15 +57,7 @@
           "appleTeamId": "433XX9DAR2"
         }
       ],
-      "expo-notifications",
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "enableSceneSupport": true
-          }
-        }
-      ]
+      "expo-notifications"
     ],
     "experiments": {
       "typedRoutes": true

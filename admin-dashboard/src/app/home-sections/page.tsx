@@ -18,6 +18,8 @@ interface Property {
   profile?: { full_name: string; role: string };
 }
 
+import { BannersTab } from "./BannersTab";
+
 const TABS = [
   { id: "is_hero", label: "Sliding Banner on Top" },
   { id: "featured", label: "Featured Properties" },
@@ -37,7 +39,9 @@ export default function HomeSectionsPage() {
   const [modalLoading, setModalLoading] = useState(false);
 
   useEffect(() => {
-    fetchSectionProperties();
+    if (activeTab !== "is_hero") {
+      fetchSectionProperties();
+    }
   }, [activeTab]);
 
   const fetchSectionProperties = async () => {
@@ -139,55 +143,61 @@ export default function HomeSectionsPage() {
           ))}
         </div>
 
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>
-            Properties in {TABS.find((t) => t.id === activeTab)?.label}
-          </h2>
-          <div className={styles.actionsRow}>
-            <button className={styles.createBtn} onClick={openAddModal}>
-              + Add Property to this Section
-            </button>
-            <button 
-              className={styles.createSecondaryBtn} 
-              onClick={() => window.location.href = `/properties`}
-            >
-              + Go to Properties
-            </button>
-          </div>
-        </div>
-
-        {loading ? (
-          <div className={styles.loading}>Loading properties...</div>
-        ) : properties.length === 0 ? (
-          <div className={styles.emptyState}>
-            <p>No properties added to this section yet.</p>
-          </div>
+        {activeTab === "is_hero" ? (
+          <BannersTab />
         ) : (
-          <div className={styles.grid}>
-            {properties.map((p) => (
-              <div key={p.id} className={styles.card}>
-                <div className={styles.cardImgWrapper}>
-                  <img src={getImg(p)} alt={p.title} className={styles.cardImg} />
-                </div>
-                <div className={styles.cardContent}>
-                  <h3 className={styles.cardTitle}>{p.title}</h3>
-                  <p className={styles.cardType}>{p.property_type}</p>
-                  <p className={styles.cardBy}>By {p.profile?.full_name || "Unknown"}</p>
-                  <button
-                    className={styles.removeBtn}
-                    onClick={() => handleToggleSection(p.id, false)}
-                  >
-                    Remove from Section
-                  </button>
-                </div>
+          <>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>
+                Properties in {TABS.find((t) => t.id === activeTab)?.label}
+              </h2>
+              <div className={styles.actionsRow}>
+                <button className={styles.createBtn} onClick={openAddModal}>
+                  + Add Property to this Section
+                </button>
+                <button 
+                  className={styles.createSecondaryBtn} 
+                  onClick={() => window.location.href = `/properties`}
+                >
+                  + Go to Properties
+                </button>
               </div>
-            ))}
-          </div>
+            </div>
+
+            {loading ? (
+              <div className={styles.loading}>Loading properties...</div>
+            ) : properties.length === 0 ? (
+              <div className={styles.emptyState}>
+                <p>No properties added to this section yet.</p>
+              </div>
+            ) : (
+              <div className={styles.grid}>
+                {properties.map((p) => (
+                  <div key={p.id} className={styles.card}>
+                    <div className={styles.cardImgWrapper}>
+                      <img src={getImg(p)} alt={p.title} className={styles.cardImg} />
+                    </div>
+                    <div className={styles.cardContent}>
+                      <h3 className={styles.cardTitle}>{p.title}</h3>
+                      <p className={styles.cardType}>{p.property_type}</p>
+                      <p className={styles.cardBy}>By {p.profile?.full_name || "Unknown"}</p>
+                      <button
+                        className={styles.removeBtn}
+                        onClick={() => handleToggleSection(p.id, false)}
+                      >
+                        Remove from Section
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
 
-      {/* Select Property Modal */}
-      {isModalOpen && (
+      {/* Select Property Modal (only for non-hero tabs) */}
+      {isModalOpen && activeTab !== "is_hero" && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
