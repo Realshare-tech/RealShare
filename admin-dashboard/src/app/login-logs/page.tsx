@@ -25,7 +25,7 @@ interface LoginLog {
 }
 
 export default function LoginLogsPage() {
-  const { user, profile, loading: authLoading } = useAuth();
+  const { user, userProfile: profile, loading: authLoading } = useAuth();
   const router = useRouter();
   
   const [logs, setLogs] = useState<LoginLog[]>([]);

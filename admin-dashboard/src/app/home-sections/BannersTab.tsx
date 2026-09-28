@@ -33,8 +33,7 @@ export function BannersTab() {
   const [formImage, setFormImage] = useState("");
   const [formLink, setFormLink] = useState("");
 
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [bannerToDelete, setBannerToDelete] = useState("");
+  const [bannerToDelete, setBannerToDelete] = useState<Banner | null>(null);
 
   useEffect(() => {
     fetchBanners();
@@ -110,26 +109,8 @@ export function BannersTab() {
     } catch (e) {}
   };
 
-  const handleDelete = (id: string) => {
-    setBannerToDelete(id);
-    setDeleteModalOpen(true);
-  };
-
-  const onConfirmDelete = async (otp: string) => {
-    try {
-      const authHeader = await getAuthHeader();
-      const res = await fetch(`/api/cms/banners/${bannerToDelete}?otp=${encodeURIComponent(otp)}`, {
-        method: "DELETE",
-        headers: authHeader || undefined,
-      });
-      if (res.ok) {
-        setDeleteModalOpen(false);
-        fetchBanners();
-      } else {
-        const data = await res.json();
-        alert(data.error || "Delete failed");
-      }
-    } catch (e) {}
+  const handleDelete = (banner: Banner) => {
+    setBannerToDelete(banner);
   };
 
   return (
@@ -192,7 +173,7 @@ export function BannersTab() {
                   </button>
                   <button
                     className={styles.removeBtn}
-                    onClick={() => handleDelete(b.id)}
+                    onClick={() => handleDelete(b)}
                   >
                     Delete
                   </button>
@@ -264,14 +245,18 @@ export function BannersTab() {
         </div>
       )}
       
-      {deleteModalOpen && (
-        <DeleteOtpModal
-          entityName="banner"
-          actionKey={`delete_${bannerToDelete}`}
-          onCancel={() => setDeleteModalOpen(false)}
-          onConfirm={onConfirmDelete}
-        />
-      )}
+      <DeleteOtpModal
+        isOpen={!!bannerToDelete}
+        onClose={() => setBannerToDelete(null)}
+        targetId={bannerToDelete?.id || ""}
+        targetName={bannerToDelete?.title || ""}
+        targetType="Banner"
+        deleteUrl={`/api/cms/banners/${bannerToDelete?.id}`}
+        onSuccess={() => {
+          setBannerToDelete(null);
+          fetchBanners();
+        }}
+      />
     </>
   );
 }
