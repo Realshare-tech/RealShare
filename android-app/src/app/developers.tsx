@@ -43,7 +43,7 @@ export default function DevelopersScreen() {
           <TouchableOpacity onPress={() => { if (router.canGoBack()) { router.back(); } else { router.replace('/'); } }} style={styles.backBtn}>
             <Text style={styles.backIcon}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Top Developers</Text>
+          <Text style={styles.headerTitle}>Featured Developers</Text>
           <View style={{ width: 24 }} />
         </View>
 

@@ -125,7 +125,7 @@ export function FeaturedProjectsSlider({ properties }: FeaturedProjectsSliderPro
             <View style={desktopStyles.leftContent}>
               <View style={desktopStyles.badge}>
                 <Ionicons name="star" size={14} color={Neutrals.white} style={{ marginRight: 6 }} />
-                <Text style={desktopStyles.badgeText}>FEATURED PROPERTY</Text>
+                <Text style={desktopStyles.badgeText}>FEATURED PROJECT</Text>
               </View>
               
               <Text style={desktopStyles.propertyType}>
@@ -270,7 +270,7 @@ export function FeaturedProjectsSlider({ properties }: FeaturedProjectsSliderPro
           <TouchableOpacity 
             style={styles.mobileViewBtn} 
             onPress={() => router.push(`/property/${activeMobileSlide.id}` as any)}>
-            <Text style={styles.mobileViewBtnText}>View Property</Text>
+            <Text style={styles.mobileViewBtnText}>View Project</Text>
             <Ionicons name="arrow-forward" size={16} color={Neutrals.obsidian} />
           </TouchableOpacity>
         </View>
