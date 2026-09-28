@@ -159,7 +159,6 @@ export function DesktopNav() {
             boxShadow: '0 4px 10px rgba(0,0,0,0.12)',
             zIndex: 9999,
             cursor: 'pointer',
-            overflow: 'hidden',
           }}
         >
           <img
