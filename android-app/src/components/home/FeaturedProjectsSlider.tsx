@@ -260,7 +260,7 @@ export function FeaturedProjectsSlider({ properties }: FeaturedProjectsSliderPro
           <Image source={{ uri: getImg(activeMobileSlide) }} style={StyleSheet.absoluteFill} contentFit="cover" />
           <View style={{ position: 'absolute', top: 12, left: 12, backgroundColor: 'rgba(0,0,0,0.6)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)' }}>
             <Ionicons name="star" size={12} color={GoldSystem.primaryGold} style={{ marginRight: 4 }} />
-            <Text style={{ color: '#FFF', fontSize: 10, fontWeight: '700', letterSpacing: 1 }}>FEATURED</Text>
+            <Text style={{ color: '#FFF', fontSize: 10, fontWeight: '700', letterSpacing: 1, lineHeight: 14, paddingTop: Platform.OS === 'web' ? 2 : 0 }}>FEATURED</Text>
           </View>
         </View>
 
@@ -495,6 +495,7 @@ const desktopStyles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 1.2,
     fontSize: 10,
+    lineHeight: 14,
   },
   propertyType: {
     ...Typography.labelSmall,
