@@ -247,48 +247,93 @@ export function FeaturedProjectsSlider({ properties }: FeaturedProjectsSliderPro
 
   return (
     <View style={styles.container}>
-      <View style={{ marginBottom: 24, paddingHorizontal: 16 }}>
-        <Text style={styles.mobileSuperTitle}>FEATURED PROJECTS</Text>
+      <View style={{ marginBottom: 20, paddingHorizontal: 16 }}>
+        <Text style={styles.mobileSuperTitle}>EXCLUSIVE PROJECTS</Text>
         <Text style={styles.mobileMainTitle}>
-          Extraordinary Spaces,{'\n'}
-          <Text style={{ color: GoldSystem.primaryGold }}>Real Possibilities.</Text>
+          Curated For You
         </Text>
       </View>
 
-      <View style={[styles.slide, { marginHorizontal: 16, borderRadius: Radius.lg, overflow: 'hidden' }]}>
-        <Image source={{ uri: getImg(activeMobileSlide) }} style={[StyleSheet.absoluteFill, { borderRadius: Radius.lg }]} contentFit="cover" />
-        <LinearGradient colors={['transparent', 'rgba(0,0,0,0.35)', 'rgba(0,0,0,0.9)']} style={[StyleSheet.absoluteFill, { borderRadius: Radius.lg }]} />
-        
+      <View style={{ marginHorizontal: 16, position: 'relative', paddingBottom: 20 }}>
+        {/* Top Image */}
+        <View style={{ height: 220, borderRadius: 20, overflow: 'hidden' }}>
+          <Image source={{ uri: getImg(activeMobileSlide) }} style={StyleSheet.absoluteFill} contentFit="cover" />
+          <View style={{ position: 'absolute', top: 12, left: 12, backgroundColor: 'rgba(0,0,0,0.6)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)' }}>
+            <Ionicons name="star" size={12} color={GoldSystem.primaryGold} style={{ marginRight: 4 }} />
+            <Text style={{ color: '#FFF', fontSize: 10, fontWeight: '700', letterSpacing: 1 }}>FEATURED</Text>
+          </View>
+        </View>
 
-
-        <View style={styles.content}>
-          <Text style={styles.title}>{activeMobileSlide.title}</Text>
-          <Text style={styles.subtitle}>
-            {activeMobileSlide.locality}, {activeMobileSlide.district}
+        {/* Overlapping Info Card */}
+        <View style={{ 
+          backgroundColor: '#FFF', 
+          borderRadius: 16, 
+          padding: 20, 
+          marginTop: -40, 
+          marginHorizontal: 12,
+          ...(Platform.OS === 'web' ? { boxShadow: '0 8px 24px rgba(0,0,0,0.1)' } as any : { elevation: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8 })
+        }}>
+          <Text style={{ fontSize: 12, color: Neutrals.gray500, fontWeight: '600', letterSpacing: 2, marginBottom: 4, textTransform: 'uppercase' }}>
+            {activeMobileSlide.property_type || 'LUXURY PROJECT'}
           </Text>
-          <Text style={styles.priceTextMobile}>{getPriceDisplay(activeMobileSlide)}</Text>
-          <TouchableOpacity 
-            style={styles.mobileViewBtn} 
-            onPress={() => router.push(`/property/${activeMobileSlide.id}` as any)}>
-            <Text style={styles.mobileViewBtnText}>View Project</Text>
-            <Ionicons name="arrow-forward" size={16} color={Neutrals.obsidian} />
-          </TouchableOpacity>
+          <Text style={{ fontSize: 22, fontWeight: '700', color: Neutrals.obsidian, marginBottom: 8, fontFamily: Platform.OS === 'web' ? 'Georgia, "Times New Roman", serif' : undefined }}>
+            {activeMobileSlide.title}
+          </Text>
+          
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+            <Ionicons name="location" size={16} color="#E11D48" />
+            <Text style={{ fontSize: 13, color: Neutrals.gray600, marginLeft: 4 }}>
+              {activeMobileSlide.locality}, {activeMobileSlide.district}
+            </Text>
+          </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#F3F4F6', paddingVertical: 12, marginBottom: 16 }}>
+             <View style={{ alignItems: 'center' }}>
+               <Text style={{ fontSize: 16, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.bedrooms || 4}</Text>
+               <Text style={{ fontSize: 11, color: Neutrals.gray500 }}>Beds</Text>
+             </View>
+             <View style={{ width: 1, backgroundColor: '#F3F4F6' }} />
+             <View style={{ alignItems: 'center' }}>
+               <Text style={{ fontSize: 16, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.bathrooms || 4}</Text>
+               <Text style={{ fontSize: 11, color: Neutrals.gray500 }}>Baths</Text>
+             </View>
+             <View style={{ width: 1, backgroundColor: '#F3F4F6' }} />
+             <View style={{ alignItems: 'center' }}>
+               <Text style={{ fontSize: 16, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.area_sqft || '3,200'}</Text>
+               <Text style={{ fontSize: 11, color: Neutrals.gray500 }}>Sq.Ft.</Text>
+             </View>
+          </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <View>
+              <Text style={{ fontSize: 18, fontWeight: '700', color: '#D4AF37' }}>{getPriceDisplay(activeMobileSlide)}</Text>
+              <Text style={{ fontSize: 11, color: Neutrals.gray500 }}>Starting Price</Text>
+            </View>
+            <TouchableOpacity 
+              style={{ backgroundColor: Neutrals.obsidian, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12, flexDirection: 'row', alignItems: 'center' }}
+              onPress={() => router.push(`/property/${activeMobileSlide.id}` as any)}
+            >
+              <Text style={{ color: '#FFF', fontWeight: '600', fontSize: 13, marginRight: 4 }}>Explore</Text>
+              <Ionicons name="arrow-forward" size={14} color="#FFF" />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
-      <View style={[styles.mobileControlsRow, { justifyContent: 'center', marginTop: 24 }]}>
-        <TouchableOpacity onPress={handlePrev} style={styles.mobileControlBtn}>
-          <Ionicons name="chevron-back" size={20} color={Neutrals.white} />
-        </TouchableOpacity>
-        <Text style={[styles.mobilePaginationText, { marginHorizontal: 16 }]}>
-          <Text style={{ color: GoldSystem.primaryGold, fontWeight: '700' }}>
-            {String(activeIndex + 1).padStart(2, '0')}
-          </Text>
-          {' '}/ {String(slides.length).padStart(2, '0')}
-        </Text>
-        <TouchableOpacity onPress={handleNext} style={[styles.mobileControlBtn, { backgroundColor: Neutrals.gray200 }]}>
-          <Ionicons name="chevron-forward" size={20} color={Neutrals.obsidian} />
-        </TouchableOpacity>
+      {/* Modern Dots Pagination */}
+      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 4, marginBottom: 8 }}>
+        {slides.map((_, idx) => (
+          <View 
+            key={idx} 
+            style={{ 
+              width: activeIndex === idx ? 24 : 8, 
+              height: 8, 
+              borderRadius: 4, 
+              backgroundColor: activeIndex === idx ? '#D4AF37' : '#E5E7EB',
+              marginHorizontal: 4 
+            }} 
+          />
+        ))}
       </View>
     </View>
   );
