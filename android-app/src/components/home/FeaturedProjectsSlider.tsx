@@ -191,7 +191,7 @@ export function FeaturedProjectsSlider({ properties }: FeaturedProjectsSliderPro
                   </Text>
                 </View>
                 <TouchableOpacity style={desktopStyles.contactBtn} onPress={() => router.push(`/property/${activeSlide.id}` as any)}>
-                  <Text style={desktopStyles.contactBtnText}>Contact Agent</Text>
+                  <Text style={desktopStyles.contactBtnText}>Explore</Text>
                   <Ionicons name="arrow-forward" size={18} color={Neutrals.obsidian} />
                 </TouchableOpacity>
               </View>
