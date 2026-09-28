@@ -243,7 +243,7 @@ export default function AgentPortalScreen({ isEmbedded = false }: { isEmbedded?:
     );
   }
 
-  const isSubscriptionExpired = !user?.subscription || new Date(user.subscription.expires_at).getTime() < Date.now();
+  const isSubscriptionExpired = !profile?.subscription || new Date(profile.subscription.expires_at).getTime() < Date.now();
 
   if (isSubscriptionExpired) {
     return (
