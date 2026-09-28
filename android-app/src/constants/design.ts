@@ -34,6 +34,7 @@ export const Neutrals = {
   border: '#E5E7EB',
   text: '#111827',
   textSecondary: '#6B7280',
+  slate: '#64748B', // muted body/secondary text
   ruby: '#EF4444',
 };
 
