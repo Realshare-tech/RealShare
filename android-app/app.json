@@ -57,7 +57,15 @@
           "appleTeamId": "433XX9DAR2"
         }
       ],
-      "expo-notifications"
+      "expo-notifications",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "supportsMultiWindow": true
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
