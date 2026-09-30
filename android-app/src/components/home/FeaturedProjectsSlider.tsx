@@ -276,32 +276,31 @@ export function FeaturedProjectsSlider({ properties }: FeaturedProjectsSliderPro
           <Text style={{ fontSize: 9, color: Neutrals.gray500, fontWeight: '600', letterSpacing: 1, marginBottom: 0, textTransform: 'uppercase' }}>
             {activeMobileSlide.property_type || 'LUXURY PROJECT'}
           </Text>
-          <Text style={{ fontSize: 16, fontWeight: '700', color: Neutrals.obsidian, marginBottom: 2, fontFamily: Platform.OS === 'web' ? 'Georgia, "Times New Roman", serif' : undefined }}>
-            {activeMobileSlide.title}
-          </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+            <Text style={{ fontSize: 16, fontWeight: '700', color: Neutrals.obsidian, fontFamily: Platform.OS === 'web' ? 'Georgia, "Times New Roman", serif' : undefined, flex: 1, marginRight: 8 }} numberOfLines={1}>
+              {activeMobileSlide.title}
+            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Ionicons name="bed-outline" size={12} color={Neutrals.gray500} />
+                <Text style={{ fontSize: 10, fontWeight: '600', color: Neutrals.obsidian, marginLeft: 2 }}>{activeMobileSlide.bedrooms || 4}</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Ionicons name="water-outline" size={12} color={Neutrals.gray500} />
+                <Text style={{ fontSize: 10, fontWeight: '600', color: Neutrals.obsidian, marginLeft: 2 }}>{activeMobileSlide.bathrooms || 4}</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Ionicons name="expand-outline" size={12} color={Neutrals.gray500} />
+                <Text style={{ fontSize: 10, fontWeight: '600', color: Neutrals.obsidian, marginLeft: 2 }}>{activeMobileSlide.area_sqft || '3.2k'}</Text>
+              </View>
+            </View>
+          </View>
           
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
             <Ionicons name="location" size={10} color="#E11D48" />
             <Text style={{ fontSize: 10, color: Neutrals.gray600, marginLeft: 4 }}>
               {activeMobileSlide.locality}, {activeMobileSlide.district}
             </Text>
-          </View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#F3F4F6', paddingVertical: 4, marginBottom: 6 }}>
-             <View style={{ alignItems: 'center' }}>
-               <Text style={{ fontSize: 12, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.bedrooms || 4}</Text>
-               <Text style={{ fontSize: 8, color: Neutrals.gray500 }}>Beds</Text>
-             </View>
-             <View style={{ width: 1, backgroundColor: '#F3F4F6' }} />
-             <View style={{ alignItems: 'center' }}>
-               <Text style={{ fontSize: 12, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.bathrooms || 4}</Text>
-               <Text style={{ fontSize: 8, color: Neutrals.gray500 }}>Baths</Text>
-             </View>
-             <View style={{ width: 1, backgroundColor: '#F3F4F6' }} />
-             <View style={{ alignItems: 'center' }}>
-               <Text style={{ fontSize: 12, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.area_sqft || '3,200'}</Text>
-               <Text style={{ fontSize: 8, color: Neutrals.gray500 }}>Sq.Ft.</Text>
-             </View>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
