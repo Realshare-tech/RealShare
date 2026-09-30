@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
     right: 16,
   },
   title: {
-    ...Typography.titleMedium,
+    ...Typography.titleLarge,
     color: Neutrals.white,
     marginBottom: 4,
   },
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   priceTextMobile: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
     color: Neutrals.white,
     marginBottom: 12,
