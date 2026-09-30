@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, Platform, TouchableOpacity, useWindowDimensions, Animated } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Platform, TouchableOpacity, useWindowDimensions, Animated, TouchableWithoutFeedback } from 'react-native';
 import { Image } from 'expo-image';
 import { Neutrals, GoldSystem, Typography, Radius } from '@/constants/design';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -95,134 +95,153 @@ export function FeaturedPropertiesSlider({ properties }: FeaturedPropertiesSlide
 
   // --- DESKTOP LAYOUT ---
   if (isDesktop) {
-    const activeSlide = slides[activeIndex];
-
     return (
-      <View style={[desktopStyles.container, { height: 650, paddingHorizontal: 0, paddingVertical: 0 }]}>
-        {/* Layer 1: Pristine Full-Bleed Background Image */}
-        <Image 
-          source={{ uri: getImg(activeSlide) }} 
-          style={StyleSheet.absoluteFill} 
-          contentFit="cover" 
-        />
+      <View style={[desktopStyles.container, { height: 680, paddingHorizontal: 0, paddingVertical: 0, backgroundColor: '#FAF8F5', overflow: 'hidden' }]}>
         
-        {/* Layer 2: Complex Gradients for Text Readability */}
-        {/* Left-to-right dark gradient */}
-        <LinearGradient 
-          colors={['rgba(0,0,0,0.85)', 'rgba(0,0,0,0.4)', 'transparent']} 
-          start={{x: 0, y: 0}} 
-          end={{x: 0.7, y: 0}} 
-          style={StyleSheet.absoluteFill} 
-        />
-        {/* Bottom-to-top gradient for the bottom controls */}
-        <LinearGradient 
-          colors={['transparent', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.8)']} 
-          start={{x: 0, y: 0}} 
-          end={{x: 0, y: 1}} 
-          style={StyleSheet.absoluteFill} 
-        />
-
-        {/* Layer 3: Main Content Layout */}
-        <View style={desktopStyles.contentOverlay}>
-          
-          {/* MAIN LEFT CONTENT */}
-          <View style={desktopStyles.leftPanel}>
-            {/* Badge */}
-            <View style={desktopStyles.pillBadge}>
-              <View style={desktopStyles.pillDot} />
-              <Text style={desktopStyles.pillText}>For Sale</Text>
-            </View>
-
-            {/* Huge Title */}
-            <Text style={desktopStyles.heroTitle} numberOfLines={2}>
-              {activeSlide.title || "Modern Living in the Heart of Nature"}
-            </Text>
-
-            {/* Description */}
-            <Text style={desktopStyles.heroDescription} numberOfLines={3}>
-              {activeSlide.description || "Experience luxury, comfort, and peace — all in one place with panoramic views, private pool, and world-class amenities."}
-            </Text>
-
-            {/* Amenities Grid */}
-            <View style={desktopStyles.amenitiesGrid}>
-              {!!activeSlide.bedrooms && (
-                <View style={desktopStyles.amenityBox}>
-                  <Ionicons name="bed-outline" size={24} color={Neutrals.white} style={{ marginBottom: 8 }} />
-                  <Text style={desktopStyles.amenityBoxValue}>{activeSlide.bedrooms}</Text>
-                  <Text style={desktopStyles.amenityBoxLabel}>Bedrooms</Text>
-                </View>
-              )}
-              {!!activeSlide.bathrooms && (
-                <View style={desktopStyles.amenityBox}>
-                  <Ionicons name="water-outline" size={24} color={Neutrals.white} style={{ marginBottom: 8 }} />
-                  <Text style={desktopStyles.amenityBoxValue}>{activeSlide.bathrooms}</Text>
-                  <Text style={desktopStyles.amenityBoxLabel}>Bathrooms</Text>
-                </View>
-              )}
-              {!!activeSlide.area_sqft && (
-                <View style={desktopStyles.amenityBox}>
-                  <Ionicons name="scan-outline" size={24} color={Neutrals.white} style={{ marginBottom: 8 }} />
-                  <Text style={desktopStyles.amenityBoxValue}>{activeSlide.area_sqft} sq ft</Text>
-                  <Text style={desktopStyles.amenityBoxLabel}>Built Up Area</Text>
-                </View>
-              )}
-              <View style={desktopStyles.amenityBox}>
-                <Ionicons name="location-outline" size={24} color={Neutrals.white} style={{ marginBottom: 8 }} />
-                <Text style={desktopStyles.amenityBoxValue} numberOfLines={1}>{activeSlide.locality}</Text>
-                <Text style={desktopStyles.amenityBoxLabel} numberOfLines={1}>{activeSlide.district}</Text>
-              </View>
-            </View>
-
-            {/* Price & Action Button Row */}
-            <View style={desktopStyles.actionRow}>
-              <View style={desktopStyles.priceBlock}>
-                <Text style={desktopStyles.priceTextLarge}>{getPriceDisplay(activeSlide)}</Text>
-                <View style={desktopStyles.priceDivider} />
-                <View>
-                  <Text style={desktopStyles.priceSubTop}>Premium Property</Text>
-                  <Text style={desktopStyles.priceSubBottom}>Ready to Move</Text>
-                </View>
-              </View>
-              
-              <TouchableOpacity style={desktopStyles.primaryButton} onPress={() => router.push(`/property/${activeSlide.id}` as any)}>
-                <Text style={desktopStyles.primaryButtonText}>View Details</Text>
-                <Ionicons name="arrow-forward" size={18} color={Neutrals.obsidian} />
-              </TouchableOpacity>
-            </View>
+        {/* Top Header / Title */}
+        <View style={{ alignItems: 'center', marginTop: 40, marginBottom: 16, zIndex: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: GoldSystem.primaryGold, marginRight: 12 }} />
+            <Text style={{ ...Typography.labelMedium, color: GoldSystem.darkGold, letterSpacing: 3, fontWeight: '700' }}>PREMIUM COLLECTION</Text>
+            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: GoldSystem.primaryGold, marginLeft: 12 }} />
           </View>
-
-          {/* RIGHT SIDE / FLOATING CONTROLS */}
-          <View style={desktopStyles.rightPanel}>
-            {/* Next Arrow Float */}
-            <TouchableOpacity style={desktopStyles.nextArrowFloat} onPress={handleNext}>
-              <Ionicons name="chevron-forward" size={28} color={Neutrals.obsidian} />
-            </TouchableOpacity>
-          </View>
+          <Text style={{ fontSize: 40, fontWeight: '800', color: Neutrals.obsidian, fontFamily: Platform.OS === 'web' ? 'Georgia, "Times New Roman", serif' : undefined }}>
+            Extraordinary Spaces
+          </Text>
         </View>
 
-        {/* BOTTOM FLOATING BAR (Pagination + Thumbnails) */}
-        <View style={desktopStyles.bottomBar}>
-          <View style={desktopStyles.paginationIndicator}>
-            <Text style={desktopStyles.pageNumberActive}>01</Text>
-            <View style={desktopStyles.pageTrack}>
-              <View style={[desktopStyles.pageFill, { width: '33%' }]} />
-            </View>
-            <Text style={desktopStyles.pageNumberTotal}>03</Text>
-          </View>
+        {/* 3D Coverflow Container */}
+        <View style={{ flex: 1, position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
+          {slides.map((prop, idx) => {
+            // Compute shortest path offset taking into account wrap-around
+            const total = slides.length;
+            let offset = (idx - activeIndex) % total;
+            if (offset > Math.floor(total / 2)) offset -= total;
+            if (offset < -Math.floor(total / 2)) offset += total;
 
-          <View style={desktopStyles.thumbnailRow}>
-            {slides.slice(0, 3).map((slide, i) => {
-              const isActive = i === activeIndex;
-              return (
-                <TouchableOpacity 
-                  key={slide.id || i} 
-                  style={[desktopStyles.bottomThumbnail, isActive && desktopStyles.bottomThumbnailActive]}
+            // We only care about rendering offsets -2, -1, 0, 1, 2
+            if (Math.abs(offset) > 2) return null;
+
+            // Animation mapping:
+            let translateX, scale, opacity, zIndex;
+            
+            if (offset === 0) {
+              translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [350, 0, -350] });
+              scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.85, 1, 0.85] });
+              opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.6, 1, 0.6] });
+              zIndex = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [2, 5, 2] });
+            } else if (offset === 1) {
+              translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [650, 350, 0] });
+              scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.75, 0.85, 1] });
+              opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0.6, 1] });
+              zIndex = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [1, 2, 4] });
+            } else if (offset === -1) {
+              translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, -350, -650] });
+              scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [1, 0.85, 0.75] });
+              opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [1, 0.6, 0] });
+              zIndex = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [4, 2, 1] });
+            } else if (offset === 2) {
+              translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [1000, 650, 350] });
+              scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.7, 0.75, 0.85] });
+              opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0, 0.6] });
+              zIndex = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 1, 2] });
+            } else if (offset === -2) {
+              translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [-350, -650, -1000] });
+              scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.85, 0.75, 0.7] });
+              opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.6, 0, 0] });
+              zIndex = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [2, 1, 0] });
+            } else {
+              translateX = 0; scale = 0; opacity = 0; zIndex = 0;
+            }
+
+            // We only show text on the active card
+            const textOpacity = offset === 0 
+              ? slideAnim.interpolate({ inputRange: [-1, -0.5, 0, 0.5, 1], outputRange: [0, 0, 1, 0, 0] })
+              : slideAnim.interpolate({ inputRange: [-1, -0.5, 0, 0.5, 1], outputRange: [offset === -1 ? 1 : 0, 0, 0, 0, offset === 1 ? 1 : 0] });
+
+            const priceDisplayStr = getPriceDisplay(prop);
+            const isPriceRequest = priceDisplayStr === 'Price on Request';
+
+            return (
+              <TouchableWithoutFeedback 
+                key={prop.id}
+                onPress={() => {
+                  if (offset > 0) handleNext();
+                  else if (offset < 0) handlePrev();
+                }}
+              >
+                <Animated.View 
+                  style={[
+                    {
+                      position: 'absolute',
+                      width: 700,
+                      height: 440,
+                      borderRadius: 32,
+                      backgroundColor: Neutrals.white,
+                      overflow: 'hidden',
+                      transform: [{ translateX }, { scale }],
+                      opacity,
+                      zIndex,
+                      ...(Platform.OS === 'web' ? { boxShadow: '0 24px 48px rgba(0,0,0,0.15)' } as any : { elevation: 8 })
+                    }
+                  ]}
                 >
-                  <Image source={{ uri: getImg(slide) }} style={StyleSheet.absoluteFill} contentFit="cover" />
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+                  <Image source={{ uri: getImg(prop) }} style={StyleSheet.absoluteFill} contentFit="cover" />
+                  
+                  {/* Gradient and Text overlay */}
+                  <Animated.View style={[StyleSheet.absoluteFill, { opacity: textOpacity, pointerEvents: offset === 0 ? 'auto' : 'none' }]}>
+                    <LinearGradient 
+                      colors={['transparent', 'rgba(0,0,0,0.85)']} 
+                      style={StyleSheet.absoluteFill} 
+                      start={{ x: 0, y: 0.3 }}
+                      end={{ x: 0, y: 1 }}
+                    />
+                    
+                    <View style={{ position: 'absolute', bottom: 40, left: 40, right: 40 }}>
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                        <View style={{ flex: 1, paddingRight: 32 }}>
+                          <Text style={{ ...Typography.labelMedium, color: GoldSystem.primaryGold, marginBottom: 8, letterSpacing: 1, textTransform: 'uppercase' }}>{prop.locality}, {prop.district}</Text>
+                          <Text style={{ fontSize: 36, fontWeight: '700', color: Neutrals.white, marginBottom: 16 }}>{prop.title}</Text>
+                          <View style={{ flexDirection: 'row', gap: 24 }}>
+                            {!!prop.bedrooms && <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}><Ionicons name="bed-outline" size={20} color={Neutrals.gray200}/><Text style={{ ...Typography.labelLarge, color: Neutrals.white }}>{prop.bedrooms} Beds</Text></View>}
+                            {!!prop.bathrooms && <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}><Ionicons name="water-outline" size={20} color={Neutrals.gray200}/><Text style={{ ...Typography.labelLarge, color: Neutrals.white }}>{prop.bathrooms} Baths</Text></View>}
+                            {!!prop.area_sqft && <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}><Ionicons name="scan-outline" size={20} color={Neutrals.gray200}/><Text style={{ ...Typography.labelLarge, color: Neutrals.white }}>{prop.area_sqft} Sq.Ft</Text></View>}
+                          </View>
+                        </View>
+                        <View style={{ alignItems: 'flex-end' }}>
+                          <Text style={{ fontSize: isPriceRequest ? 22 : 32, fontWeight: '700', color: Neutrals.white, marginBottom: 24 }}>{priceDisplayStr}</Text>
+                          <TouchableOpacity 
+                            style={{ backgroundColor: GoldSystem.primaryGold, paddingHorizontal: 28, paddingVertical: 14, borderRadius: 32, flexDirection: 'row', alignItems: 'center', gap: 8 }}
+                            onPress={() => router.push(`/property/${prop.id}` as any)}
+                          >
+                            <Text style={{ ...Typography.labelLarge, color: Neutrals.obsidian, fontWeight: '700' }}>View Details</Text>
+                            <Ionicons name="arrow-forward" size={18} color={Neutrals.obsidian} />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                  </Animated.View>
+                </Animated.View>
+              </TouchableWithoutFeedback>
+            );
+          })}
+        </View>
+
+        {/* Controls sitting below the 3D container */}
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 32, paddingBottom: 32, zIndex: 10 }}>
+           <TouchableOpacity onPress={handlePrev} style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: Neutrals.white, alignItems: 'center', justifyContent: 'center', ...(Platform.OS === 'web' ? { boxShadow: '0 8px 16px rgba(0,0,0,0.1)' } as any : { elevation: 4 }) }}>
+             <Ionicons name="arrow-back" size={24} color={Neutrals.obsidian} />
+           </TouchableOpacity>
+           
+           <View style={{ flexDirection: 'row', gap: 8 }}>
+             {slides.map((_, i) => (
+               <View key={i} style={{ width: i === activeIndex ? 32 : 8, height: 8, borderRadius: 4, backgroundColor: i === activeIndex ? GoldSystem.primaryGold : Neutrals.gray300 }} />
+             ))}
+           </View>
+           
+           <TouchableOpacity onPress={handleNext} style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: Neutrals.white, alignItems: 'center', justifyContent: 'center', ...(Platform.OS === 'web' ? { boxShadow: '0 8px 16px rgba(0,0,0,0.1)' } as any : { elevation: 4 }) }}>
+             <Ionicons name="arrow-forward" size={24} color={Neutrals.obsidian} />
+           </TouchableOpacity>
         </View>
       </View>
     );
