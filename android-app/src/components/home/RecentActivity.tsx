@@ -29,7 +29,7 @@ export function RecentActivity() {
             activeOpacity={0.7}
           >
             <View style={[styles.iconBg, { backgroundColor: '#F5F3FF' }]}>
-              <Ionicons name="eye-outline" size={24} color="#8B5CF6" />
+              <Ionicons name="eye-outline" size={18} color="#8B5CF6" />
             </View>
             <View style={styles.buttonTextContent}>
               <Text style={styles.buttonTitle}>Recently Viewed</Text>
@@ -37,7 +37,7 @@ export function RecentActivity() {
                 {recentViews.length > 0 ? `View your ${recentViews.length} past properties` : 'No recent properties'}
               </Text>
             </View>
-            <Ionicons name={showViews ? "chevron-down" : "chevron-forward"} size={20} color={Neutrals.gray400} />
+            <Ionicons name={showViews ? "chevron-down" : "chevron-forward"} size={16} color={Neutrals.gray400} />
           </TouchableOpacity>
           
           {showViews && recentViews.length > 0 && (
@@ -51,7 +51,7 @@ export function RecentActivity() {
                   <TouchableOpacity 
                     key={p.id} 
                     style={styles.thumbnailCard}
-                    onPress={() => router.push(`/property/${p.id}`)}
+                    onPress={() => router.push(`/property/${p.id}` as any)}
                   >
                     {imageUrl ? (
                       <Image source={{ uri: imageUrl }} style={styles.thumbnailImage} />
@@ -69,28 +69,30 @@ export function RecentActivity() {
         </View>
 
         {/* 2. Continue Search Button */}
-        <TouchableOpacity 
-          style={styles.actionButton} 
-          onPress={() => {
-            if (recentSearches.length > 0) {
-              router.push(`/(tabs)/search?q=${recentSearches[0].query}` as any);
-            } else {
-              router.push('/(tabs)/search');
-            }
-          }}
-          activeOpacity={0.7}
-        >
-          <View style={[styles.iconBg, { backgroundColor: '#EFF6FF' }]}>
-            <Ionicons name="search-outline" size={24} color="#3B82F6" />
-          </View>
-          <View style={styles.buttonTextContent}>
-            <Text style={styles.buttonTitle}>Continue with last search</Text>
-            <Text style={styles.buttonSubtitle}>
-              {recentSearches.length > 0 ? `Search for "${recentSearches[0].query}"` : 'Start a new search'}
-            </Text>
-          </View>
-          <Ionicons name="chevron-forward" size={20} color={Neutrals.gray400} />
-        </TouchableOpacity>
+        <View style={styles.expandableCard}>
+          <TouchableOpacity 
+            style={styles.actionButton} 
+            onPress={() => {
+              if (recentSearches.length > 0) {
+                router.push(`/(tabs)/search?q=${recentSearches[0].query}` as any);
+              } else {
+                router.push('/(tabs)/search');
+              }
+            }}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.iconBg, { backgroundColor: '#EFF6FF' }]}>
+              <Ionicons name="search-outline" size={18} color="#3B82F6" />
+            </View>
+            <View style={styles.buttonTextContent}>
+              <Text style={styles.buttonTitle}>Continue with last search</Text>
+              <Text style={styles.buttonSubtitle}>
+                {recentSearches.length > 0 ? `Search for "${recentSearches[0].query}"` : 'Start a new search'}
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={16} color={Neutrals.gray400} />
+          </TouchableOpacity>
+        </View>
 
       </View>
 
@@ -105,12 +107,12 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     paddingHorizontal: 16,
-    gap: 12,
+    gap: 8,
   },
   expandableCard: {
     backgroundColor: Neutrals.white,
-    borderRadius: Radius.lg,
-    ...Shadows.md,
+    borderRadius: Radius.md,
+    ...Shadows.sm,
     borderWidth: 1,
     borderColor: Neutrals.gray100,
     overflow: 'hidden',
@@ -118,26 +120,27 @@ const styles = StyleSheet.create({
   actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: 10,
   },
   iconBg: {
-    width: 48,
-    height: 48,
-    borderRadius: Radius.md,
+    width: 36,
+    height: 36,
+    borderRadius: Radius.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 16,
+    marginRight: 12,
   },
   buttonTextContent: {
     flex: 1,
   },
   buttonTitle: {
-    ...Typography.titleMedium,
+    fontSize: 14,
+    fontWeight: '600',
     color: Neutrals.obsidian,
-    marginBottom: 2,
+    marginBottom: 0,
   },
   buttonSubtitle: {
-    ...Typography.caption,
+    fontSize: 11,
     color: Neutrals.gray500,
   },
   thumbnailSequence: {
