@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
   buttonContainerDesktop: {
     paddingHorizontal: 16,
     gap: 12,
+    maxWidth: 500,
   },
   buttonContainerMobile: {
     paddingHorizontal: 16,
