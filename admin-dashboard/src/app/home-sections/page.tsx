@@ -110,6 +110,11 @@ export default function HomeSectionsPage() {
     }
   };
 
+  const handleEditDirectly = (p: Property) => {
+    localStorage.setItem('editPropertyId', p.id);
+    window.location.href = '/properties';
+  };
+
   const getImg = (p: Property) => {
     if (p.images && p.images.length > 0) return p.images[0].image_url;
     return p.image_url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=400&q=80";
@@ -181,12 +186,20 @@ export default function HomeSectionsPage() {
                       <h3 className={styles.cardTitle}>{p.title}</h3>
                       <p className={styles.cardType}>{p.property_type}</p>
                       <p className={styles.cardBy}>By {p.profile?.full_name || "Unknown"}</p>
-                      <button
-                        className={styles.removeBtn}
-                        onClick={() => handleToggleSection(p.id, false)}
-                      >
-                        Remove from Section
-                      </button>
+                      <div className={styles.cardActions}>
+                        <button
+                          className={styles.editBtn}
+                          onClick={() => handleEditDirectly(p)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className={styles.removeBtn}
+                          onClick={() => handleToggleSection(p.id, false)}
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -159,22 +159,10 @@ export default function AgentPortalScreen({ isEmbedded = false }: { isEmbedded?:
       setDashboardData(data);
       setError('');
 
-      // Fetch Properties
       const propsRes = await fetch(`${apiUrl}/api/properties`);
       if (propsRes.ok) {
         const propsData = await propsRes.json();
-        const mappedProperties = propsData.map((p: any) => ({
-          id: p.id,
-          title: p.title,
-          location: `${p.locality}, ${p.district}`,
-          price: `₹ ${(Number(p.price_per_fraction) || 50000).toLocaleString('en-IN')}`,
-          images: p.images?.length > 0 ? p.images.map((img: any) => img.image_url) : ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1000'],
-          bhk: p.property_type,
-          area: 'Premium',
-          score: p.target_irr || 15.0,
-          isVerified: true
-        }));
-        setProperties(mappedProperties);
+        setProperties(propsData);
       }
     } catch (err: any) {
       console.error('Agent dashboard fetch error:', err);
@@ -314,7 +302,7 @@ export default function AgentPortalScreen({ isEmbedded = false }: { isEmbedded?:
           <SectionHeader title="Hot Selling Projects" onViewAll={() => {}} />
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingRight: 16 }}>
             {properties.map((prop) => (
-              <PropertyCard key={prop.id} {...prop} compact />
+              <PropertyCard key={prop.id} {...propertyToCardProps(prop)} compact />
             ))}
           </ScrollView>
         </View>

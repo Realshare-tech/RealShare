@@ -218,6 +218,19 @@ export default function PropertiesPage() {
     fetchProperties();
   }, []);
 
+  useEffect(() => {
+    if (properties.length > 0) {
+      const editId = localStorage.getItem('editPropertyId');
+      if (editId) {
+        const p = properties.find(prop => prop.id === editId);
+        if (p) {
+          handleEditClick(p);
+          localStorage.removeItem('editPropertyId');
+        }
+      }
+    }
+  }, [properties]);
+
   // Edit Property State
   const [editingPropertyId, setEditingPropertyId] = useState<string | null>(null);
 

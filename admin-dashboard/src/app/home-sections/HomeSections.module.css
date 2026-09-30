@@ -170,8 +170,31 @@
   margin-bottom: 16px;
 }
 
-.removeBtn {
+.cardActions {
+  display: flex;
+  gap: 8px;
   width: 100%;
+}
+
+.editBtn {
+  flex: 1;
+  padding: 8px;
+  background: #f3f4f6;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.editBtn:hover {
+  background: #e5e7eb;
+}
+
+.removeBtn {
+  flex: 1;
   padding: 8px;
   background: #fee2e2;
   color: #dc2626;
@@ -180,6 +203,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  font-size: 14px;
 }
 
 .removeBtn:hover {

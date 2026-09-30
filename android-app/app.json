@@ -62,7 +62,8 @@
         "expo-build-properties",
         {
           "ios": {
-            "supportsMultiWindow": true
+            "supportsMultiWindow": true,
+            "useSceneLifecycle": true
           }
         }
       ]
