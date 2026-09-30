@@ -232,9 +232,9 @@ const styles = StyleSheet.create({
     right: 20,
   },
   title: {
-    ...Typography.headlineLarge,
+    ...Typography.headlineSmall,
     color: Neutrals.white,
-    marginBottom: 6,
+    marginBottom: 4,
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
@@ -244,9 +244,9 @@ const styles = StyleSheet.create({
     lineHeight: 56,
   },
   subtitle: {
-    ...Typography.bodyMedium,
+    ...Typography.caption,
     color: Neutrals.gray200,
-    marginBottom: 16,
+    marginBottom: 10,
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
@@ -259,9 +259,10 @@ const styles = StyleSheet.create({
     width: 200,
   },
   mobileButtonWrapper: {
-    transform: [{ scale: 0.85 }],
+    transform: [{ scale: 0.6 }],
     alignItems: 'flex-start',
-    marginLeft: -15, // Compenseate for scale shift
+    marginLeft: -40, // Compensate for aggressive scale shift
+    marginTop: -8,
   },
   pagination: {
     position: 'absolute',
