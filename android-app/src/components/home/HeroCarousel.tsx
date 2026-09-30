@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   buttonMobile: {
-    width: 140,
+    width: 115,
     height: 34,
     paddingHorizontal: 0,
   },
