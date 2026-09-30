@@ -267,54 +267,54 @@ export function FeaturedProjectsSlider({ properties }: FeaturedProjectsSliderPro
         {/* Overlapping Info Card */}
         <View style={{ 
           backgroundColor: '#FFF', 
-          borderRadius: 16, 
-          padding: 12, 
-          marginTop: -30, 
+          borderRadius: 12, 
+          padding: 10, 
+          marginTop: -60, 
           marginHorizontal: 16,
           ...(Platform.OS === 'web' ? { boxShadow: '0 8px 24px rgba(0,0,0,0.1)' } as any : { elevation: 6, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8 })
         }}>
-          <Text style={{ fontSize: 10, color: Neutrals.gray500, fontWeight: '600', letterSpacing: 1, marginBottom: 2, textTransform: 'uppercase' }}>
+          <Text style={{ fontSize: 9, color: Neutrals.gray500, fontWeight: '600', letterSpacing: 1, marginBottom: 0, textTransform: 'uppercase' }}>
             {activeMobileSlide.property_type || 'LUXURY PROJECT'}
           </Text>
-          <Text style={{ fontSize: 18, fontWeight: '700', color: Neutrals.obsidian, marginBottom: 4, fontFamily: Platform.OS === 'web' ? 'Georgia, "Times New Roman", serif' : undefined }}>
+          <Text style={{ fontSize: 16, fontWeight: '700', color: Neutrals.obsidian, marginBottom: 2, fontFamily: Platform.OS === 'web' ? 'Georgia, "Times New Roman", serif' : undefined }}>
             {activeMobileSlide.title}
           </Text>
           
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-            <Ionicons name="location" size={12} color="#E11D48" />
-            <Text style={{ fontSize: 11, color: Neutrals.gray600, marginLeft: 4 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+            <Ionicons name="location" size={10} color="#E11D48" />
+            <Text style={{ fontSize: 10, color: Neutrals.gray600, marginLeft: 4 }}>
               {activeMobileSlide.locality}, {activeMobileSlide.district}
             </Text>
           </View>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#F3F4F6', paddingVertical: 8, marginBottom: 10 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#F3F4F6', paddingVertical: 4, marginBottom: 6 }}>
              <View style={{ alignItems: 'center' }}>
-               <Text style={{ fontSize: 14, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.bedrooms || 4}</Text>
-               <Text style={{ fontSize: 9, color: Neutrals.gray500 }}>Beds</Text>
+               <Text style={{ fontSize: 12, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.bedrooms || 4}</Text>
+               <Text style={{ fontSize: 8, color: Neutrals.gray500 }}>Beds</Text>
              </View>
              <View style={{ width: 1, backgroundColor: '#F3F4F6' }} />
              <View style={{ alignItems: 'center' }}>
-               <Text style={{ fontSize: 14, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.bathrooms || 4}</Text>
-               <Text style={{ fontSize: 9, color: Neutrals.gray500 }}>Baths</Text>
+               <Text style={{ fontSize: 12, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.bathrooms || 4}</Text>
+               <Text style={{ fontSize: 8, color: Neutrals.gray500 }}>Baths</Text>
              </View>
              <View style={{ width: 1, backgroundColor: '#F3F4F6' }} />
              <View style={{ alignItems: 'center' }}>
-               <Text style={{ fontSize: 14, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.area_sqft || '3,200'}</Text>
-               <Text style={{ fontSize: 9, color: Neutrals.gray500 }}>Sq.Ft.</Text>
+               <Text style={{ fontSize: 12, fontWeight: '700', color: Neutrals.obsidian }}>{activeMobileSlide.area_sqft || '3,200'}</Text>
+               <Text style={{ fontSize: 8, color: Neutrals.gray500 }}>Sq.Ft.</Text>
              </View>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <View>
-              <Text style={{ fontSize: 16, fontWeight: '700', color: '#D4AF37' }}>{getPriceDisplay(activeMobileSlide)}</Text>
-              <Text style={{ fontSize: 9, color: Neutrals.gray500 }}>Starting Price</Text>
+              <Text style={{ fontSize: 14, fontWeight: '700', color: '#D4AF37' }}>{getPriceDisplay(activeMobileSlide)}</Text>
+              <Text style={{ fontSize: 8, color: Neutrals.gray500 }}>Starting Price</Text>
             </View>
             <TouchableOpacity 
-              style={{ backgroundColor: Neutrals.obsidian, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, flexDirection: 'row', alignItems: 'center' }}
+              style={{ backgroundColor: Neutrals.obsidian, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, flexDirection: 'row', alignItems: 'center' }}
               onPress={() => router.push(`/property/${activeMobileSlide.id}` as any)}
             >
-              <Text style={{ color: '#FFF', fontWeight: '600', fontSize: 11, marginRight: 4 }}>Explore</Text>
-              <Ionicons name="arrow-forward" size={12} color="#FFF" />
+              <Text style={{ color: '#FFF', fontWeight: '600', fontSize: 10, marginRight: 4 }}>Explore</Text>
+              <Ionicons name="arrow-forward" size={10} color="#FFF" />
             </TouchableOpacity>
           </View>
         </View>
