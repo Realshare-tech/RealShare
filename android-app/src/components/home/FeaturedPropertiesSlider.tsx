@@ -99,159 +99,79 @@ export function FeaturedPropertiesSlider({ properties }: FeaturedPropertiesSlide
 
     return (
       <View style={desktopStyles.container}>
-        {/* Background shape */}
-        <View style={desktopStyles.bgShape} />
-
-        <View style={desktopStyles.layoutRow}>
+        <View style={desktopStyles.bannerWrapper}>
+          <Image source={{ uri: getImg(activeSlide) }} style={[StyleSheet.absoluteFill, { borderRadius: 24 }]} contentFit="cover" />
+          <LinearGradient colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.9)']} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={[StyleSheet.absoluteFill, { borderRadius: 24 }]} />
           
-          {/* LEFT COLUMN */}
-          <View style={desktopStyles.leftCol}>
-            <View style={desktopStyles.headerTopRow}>
-              <Text style={desktopStyles.superTitle}>FEATURED PROPERTIES</Text>
-              <View style={desktopStyles.superTitleLine} />
-            </View>
-            
-            <Text style={desktopStyles.mainTitle}>
-              Extraordinary{'\n'}Spaces,{'\n'}
-              <Text style={{ color: GoldSystem.primaryGold }}>Real Possibilities.</Text>
-            </Text>
-            
-            <Text style={desktopStyles.subtitle}>
-              Handpicked properties that combine lifestyle, location and long-term value.
-            </Text>
+          <View style={desktopStyles.bannerContent}>
+            {/* LEFT COLUMN: TITLE & CONTROLS */}
+            <View style={desktopStyles.bannerLeft}>
+              <View style={desktopStyles.headerTopRow}>
+                <Text style={[desktopStyles.superTitle, { color: GoldSystem.primaryGold }]}>FEATURED PROPERTIES</Text>
+                <View style={[desktopStyles.superTitleLine, { backgroundColor: GoldSystem.primaryGold, opacity: 0.5 }]} />
+              </View>
+              
+              <Text style={[desktopStyles.mainTitle, { color: Neutrals.white }]}>
+                Extraordinary{'\n'}Spaces,{'\n'}
+                <Text style={{ color: GoldSystem.primaryGold }}>Real Possibilities.</Text>
+              </Text>
+              
+              <Text style={[desktopStyles.subtitle, { color: Neutrals.gray300 }]}>
+                Handpicked properties that combine lifestyle, location and long-term value.
+              </Text>
 
-            <View style={desktopStyles.controlsRow}>
-              <TouchableOpacity onPress={handlePrev} style={desktopStyles.controlBtn}>
-                <Ionicons name="chevron-back" size={20} color={Neutrals.white} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleNext} style={desktopStyles.controlBtnWhite}>
-                <Ionicons name="chevron-forward" size={20} color={Neutrals.obsidian} />
-              </TouchableOpacity>
-              <Text style={desktopStyles.paginationText}>
-                <Text style={{ color: GoldSystem.primaryGold, fontWeight: '700' }}>
-                  {String(activeIndex + 1).padStart(2, '0')}
+              <View style={desktopStyles.controlsRow}>
+                <TouchableOpacity onPress={handlePrev} style={desktopStyles.controlBtn}>
+                  <Ionicons name="chevron-back" size={20} color={Neutrals.white} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleNext} style={desktopStyles.controlBtn}>
+                  <Ionicons name="chevron-forward" size={20} color={Neutrals.white} />
+                </TouchableOpacity>
+                <Text style={[desktopStyles.paginationText, { color: Neutrals.gray300 }]}>
+                  <Text style={{ color: GoldSystem.primaryGold, fontWeight: '700' }}>
+                    {String(activeIndex + 1).padStart(2, '0')}
+                  </Text>
+                  {' '}/ {String(slides.length).padStart(2, '0')}
                 </Text>
-                {' '}/ {String(slides.length).padStart(2, '0')}
-              </Text>
+              </View>
             </View>
 
-            <View style={desktopStyles.premiumLineRow}>
-              <View style={desktopStyles.verticalLine} />
-              <Text style={desktopStyles.premiumText}>
-                Premium Homes{'\n'}in Prime Locations
-              </Text>
+            {/* RIGHT COLUMN: PROPERTY INFO */}
+            <View style={desktopStyles.bannerRight}>
+              <View style={desktopStyles.mainBadge}>
+                <Ionicons name="star" size={12} color={GoldSystem.primaryGold} style={{ marginRight: 4 }} />
+                <Text style={desktopStyles.mainBadgeText}>FEATURED</Text>
+              </View>
+
+              <View style={desktopStyles.locationRow}>
+                <Ionicons name="location" size={16} color={Neutrals.white} />
+                <Text style={desktopStyles.locationText}>{activeSlide.locality}, {activeSlide.district}</Text>
+              </View>
+              
+              <Text style={desktopStyles.cardTitle}>{activeSlide.title}</Text>
+              
+              {!!activeSlide.description && (
+                <Text style={desktopStyles.cardDesc} numberOfLines={2}>
+                  {activeSlide.description}
+                </Text>
+              )}
+              
+              <View style={desktopStyles.amenitiesRow}>
+                {!!activeSlide.bedrooms && <View style={desktopStyles.amenityItem}><Ionicons name="bed-outline" size={16} color={Neutrals.white}/><Text style={desktopStyles.amenityText}>{activeSlide.bedrooms} Beds</Text></View>}
+                {!!activeSlide.bathrooms && <View style={desktopStyles.amenityItem}><Ionicons name="water-outline" size={16} color={Neutrals.white}/><Text style={desktopStyles.amenityText}>{activeSlide.bathrooms} Baths</Text></View>}
+                {!!activeSlide.area_sqft && <View style={desktopStyles.amenityItem}><Ionicons name="expand-outline" size={16} color={Neutrals.white}/><Text style={desktopStyles.amenityText}>{activeSlide.area_sqft} Sq.Ft</Text></View>}
+              </View>
+
+              <View style={[desktopStyles.mainCardAction, { marginTop: 32 }]}>
+                <Text style={desktopStyles.priceText}>{getPriceDisplay(activeSlide)}</Text>
+                <TouchableOpacity style={desktopStyles.viewBtn} onPress={() => router.push(`/property/${activeSlide.id}` as any)}>
+                  <Text style={desktopStyles.viewBtnText}>View Property</Text>
+                  <Ionicons name="arrow-forward" size={16} color={Neutrals.obsidian} />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-
-          {/* CENTER COLUMN (ACTIVE CARD STACK) */}
-          <View style={desktopStyles.centerCol}>
-            {[3, 2, 1, 0, -1].map((offset) => {
-              if (slides.length <= offset && offset !== -1) return null;
-              const idx = (activeIndex + offset + slides.length) % slides.length;
-              const prop = slides[idx];
-
-              let translateX, translateY, scale, opacity, contentOpacity;
-              if (offset === -1) {
-                translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0, 0] });
-                translateY = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, -500, -500] });
-                scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [1, 1, 1] });
-                opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [1, 0, 0] });
-                contentOpacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [1, 0, 0] });
-              } else if (offset === 0) {
-                translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [24, 0, 0] });
-                translateY = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0, -500] });
-                scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.95, 1, 1] });
-                opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.85, 1, 0] });
-                contentOpacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 1, 0] });
-              } else if (offset === 1) {
-                translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [48, 24, 0] });
-                translateY = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0, 0] });
-                scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.90, 0.95, 1] });
-                opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.70, 0.85, 1] });
-                contentOpacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0, 1] });
-              } else if (offset === 2) {
-                translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [48, 48, 24] });
-                translateY = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0, 0] });
-                scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.90, 0.90, 0.95] });
-                opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0.70, 0.85] });
-                contentOpacity = 0;
-              } else {
-                translateX = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [48, 48, 48] });
-                translateY = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0, 0] });
-                scale = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.90, 0.90, 0.90] });
-                opacity = slideAnim.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0, 0.70] });
-                contentOpacity = 0;
-              }
-
-              return (
-                <Animated.View 
-                  key={`${prop.id}-${offset}`} 
-                  style={[
-                    desktopStyles.mainCard,
-                    {
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      zIndex: 10 - offset,
-                      transform: [{ translateX }, { translateY }, { scale }],
-                      opacity
-                    }
-                  ]}
-                >
-                  <Image source={{ uri: getImg(prop) }} style={[StyleSheet.absoluteFill, { borderRadius: 32 }]} contentFit="cover" />
-                  <LinearGradient colors={['transparent', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.9)']} style={[StyleSheet.absoluteFill, { borderRadius: 32 }]} />
-                  
-                  <Animated.View style={[StyleSheet.absoluteFill, { opacity: contentOpacity }]}>
-                    <View style={desktopStyles.mainBadge}>
-                        <Ionicons name="star" size={12} color={GoldSystem.primaryGold} style={{ marginRight: 4 }} />
-                        <Text style={desktopStyles.mainBadgeText}>FEATURED</Text>
-                      </View>
-
-                      <View style={desktopStyles.mainCardBottom}>
-                        <View style={desktopStyles.mainCardInfo}>
-                          <View style={desktopStyles.locationRow}>
-                            <Ionicons name="location" size={14} color={Neutrals.white} />
-                            <Text style={desktopStyles.locationText}>{prop.locality}, {prop.district}</Text>
-                          </View>
-                          <Text style={desktopStyles.cardTitle}>{prop.title}</Text>
-                          {!!prop.description && (
-                            <Text style={desktopStyles.cardDesc} numberOfLines={2}>
-                              {prop.description}
-                            </Text>
-                          )}
-                          
-                          <View style={desktopStyles.amenitiesRow}>
-                            {!!prop.bedrooms && <View style={desktopStyles.amenityItem}><Ionicons name="bed-outline" size={16} color={Neutrals.white}/><Text style={desktopStyles.amenityText}>{prop.bedrooms} Beds</Text></View>}
-                            {!!prop.bathrooms && <View style={desktopStyles.amenityItem}><Ionicons name="water-outline" size={16} color={Neutrals.white}/><Text style={desktopStyles.amenityText}>{prop.bathrooms} Baths</Text></View>}
-                            {!!prop.area_sqft && <View style={desktopStyles.amenityItem}><Ionicons name="expand-outline" size={16} color={Neutrals.white}/><Text style={desktopStyles.amenityText}>{prop.area_sqft} Sq.Ft</Text></View>}
-                          </View>
-                        </View>
-
-                        <View style={desktopStyles.mainCardAction}>
-                          <View style={desktopStyles.thumbRowInside}>
-                            {prop.images?.slice(0, 3).map((img: any, i: number) => {
-                              const raw = typeof img === 'string' ? img : (img?.image_url || '');
-                              return (
-                                <View key={i} style={desktopStyles.thumbWrapperInside}>
-                                  <Image source={{ uri: getFullImageUrl(raw) }} style={desktopStyles.thumbImage} contentFit="cover" />
-                                </View>
-                              );
-                            })}
-                          </View>
-                          <Text style={desktopStyles.priceText}>{getPriceDisplay(prop)}</Text>
-                          <TouchableOpacity style={desktopStyles.viewBtn} onPress={() => router.push(`/property/${prop.id}` as any)}>
-                            <Text style={desktopStyles.viewBtnText}>View Property</Text>
-                            <Ionicons name="arrow-forward" size={16} color={Neutrals.obsidian} />
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </Animated.View>
-                </Animated.View>
-              );
-            })}
           </View>
         </View>
-
       </View>
     );
   }
@@ -433,29 +353,43 @@ const desktopStyles = StyleSheet.create({
     transform: [{ rotate: '-5deg' }],
     zIndex: 1,
   },
-  layoutRow: {
+  bannerWrapper: {
+    width: '100%',
+    height: 480,
+    position: 'relative',
+    borderRadius: 24,
+    overflow: 'hidden',
+    ...(Platform.OS === 'web' ? { boxShadow: '0 24px 48px rgba(0,0,0,0.25)' } as any : { elevation: 10 }),
+  },
+  bannerContent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    zIndex: 2,
-    minHeight: 220,
+    padding: 48,
   },
-  leftCol: {
-    width: '35%',
-    paddingRight: 24,
+  bannerLeft: {
+    width: '40%',
     justifyContent: 'center',
-    paddingVertical: 0,
+  },
+  bannerRight: {
+    width: '45%',
+    justifyContent: 'center',
+  },
+  headerTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
   },
   superTitle: {
     ...Typography.labelMedium,
     color: GoldSystem.darkGold,
     letterSpacing: 2,
     marginRight: 16,
-  },
-  headerTopRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
   },
   superTitleLine: {
     height: 1,
@@ -464,100 +398,42 @@ const desktopStyles = StyleSheet.create({
     opacity: 0.5,
   },
   mainTitle: {
-    fontSize: 28,
-    lineHeight: 34,
+    fontSize: 32,
+    lineHeight: 38,
     fontWeight: '700',
-    color: Neutrals.obsidian,
-    marginBottom: 12,
+    color: Neutrals.white,
+    marginBottom: 16,
     fontFamily: Platform.OS === 'web' ? 'Georgia, "Times New Roman", serif' : undefined,
   },
   subtitle: {
     ...Typography.bodyMedium,
-    color: Neutrals.gray600,
-    marginBottom: 16,
-    lineHeight: 22,
+    color: Neutrals.gray300,
+    marginBottom: 24,
+    lineHeight: 24,
   },
   controlsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginTop: 8,
   },
   controlBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: GoldSystem.darkGold,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255,255,255,0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
-  },
-  controlBtnWhite: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: Neutrals.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 24,
-    ...(Platform.OS === 'web' ? { boxShadow: '0 4px 12px rgba(0,0,0,0.08)' } as any : { elevation: 2 }),
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
   },
   paginationText: {
     ...Typography.labelLarge,
     color: Neutrals.gray400,
-  },
-  premiumLineRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  verticalLine: {
-    width: 2,
-    height: 40,
-    backgroundColor: GoldSystem.primaryGold,
-    marginRight: 16,
-  },
-  premiumText: {
-    ...Typography.bodyMedium,
-    color: Neutrals.gray600,
-    fontWeight: '500',
-  },
-  thumbRowInside: {
-    flexDirection: 'row',
-    gap: 8,
-    marginBottom: 16,
-    alignSelf: 'flex-end',
-  },
-  thumbWrapperInside: {
-    width: 60,
-    height: 48,
-    borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 1.5,
-    borderColor: Neutrals.white,
-    ...(Platform.OS === 'web' ? { boxShadow: '0 4px 8px rgba(0,0,0,0.2)' } as any : { elevation: 3 }),
-  },
-  thumbImage: {
-    width: '100%',
-    height: '100%',
-  },
-  
-  centerCol: {
-    width: '62%',
-    height: 260,
-    justifyContent: 'center',
-  },
-  mainCard: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 32,
-    overflow: 'hidden',
-    position: 'relative',
-    ...(Platform.OS === 'web' ? { boxShadow: '0 24px 48px rgba(0,0,0,0.25)' } as any : { elevation: 10 }),
+    marginLeft: 12,
   },
   mainBadge: {
-    position: 'absolute',
-    top: 24,
-    left: 24,
+    alignSelf: 'flex-start',
     backgroundColor: 'rgba(0,0,0,0.6)',
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -566,6 +442,7 @@ const desktopStyles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.2)',
+    marginBottom: 20,
   },
   mainBadgeText: {
     ...Typography.caption,
