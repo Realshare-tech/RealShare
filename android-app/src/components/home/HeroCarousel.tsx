@@ -256,17 +256,16 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   button: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: 24,
+    width: 180,
   },
   buttonDesktop: {
     width: 200,
   },
   mobileButtonWrapper: {
-    transform: [{ scale: 0.75 }],
+    transform: [{ scale: 0.6 }],
     alignItems: 'flex-start',
-    marginLeft: -16, 
-    marginTop: -4,
+    marginLeft: -36, 
+    marginTop: -8,
   },
   pagination: {
     position: 'absolute',
