@@ -263,10 +263,10 @@ const styles = StyleSheet.create({
     width: 200,
   },
   mobileButtonWrapper: {
-    transform: [{ scale: 0.6 }],
+    transform: [{ scale: 0.75 }],
     alignItems: 'flex-start',
-    transformOrigin: 'left center',
-    marginTop: -8,
+    marginLeft: -16, 
+    marginTop: -4,
   },
   pagination: {
     position: 'absolute',
