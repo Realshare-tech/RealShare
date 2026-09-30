@@ -99,78 +99,109 @@ export function FeaturedPropertiesSlider({ properties }: FeaturedPropertiesSlide
 
     return (
       <View style={desktopStyles.container}>
-        <View style={desktopStyles.bannerWrapper}>
-          <Image source={{ uri: getImg(activeSlide) }} style={[StyleSheet.absoluteFill, { borderRadius: 24 }]} contentFit="cover" />
-          <LinearGradient colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.9)']} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={[StyleSheet.absoluteFill, { borderRadius: 24 }]} />
+        {/* Layer 1: Ambient Blurred Background */}
+        <Image 
+          source={{ uri: getImg(activeSlide) }} 
+          style={[StyleSheet.absoluteFill, { transform: [{ scale: 1.1 }] }]} 
+          contentFit="cover" 
+          blurRadius={Platform.OS === 'web' ? undefined : 40}
+        />
+        {Platform.OS === 'web' && (
+          <View style={[StyleSheet.absoluteFill, { backdropFilter: 'blur(40px)' } as any]} />
+        )}
+        
+        {/* Layer 2: Dark Overlay for contrast */}
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(15, 15, 20, 0.65)' }]} />
+
+        {/* Layer 3: Content Layout */}
+        <View style={desktopStyles.layoutWrapper}>
           
-          <View style={desktopStyles.bannerContent}>
-            {/* LEFT COLUMN: TITLE & CONTROLS */}
-            <View style={desktopStyles.bannerLeft}>
+          {/* LEFT COLUMN: Editorial Text & Glass Card */}
+          <View style={desktopStyles.leftColumn}>
+            
+            <View style={desktopStyles.editorialHeader}>
               <View style={desktopStyles.headerTopRow}>
-                <Text style={[desktopStyles.superTitle, { color: GoldSystem.primaryGold }]}>FEATURED PROPERTIES</Text>
-                <View style={[desktopStyles.superTitleLine, { backgroundColor: GoldSystem.primaryGold, opacity: 0.5 }]} />
+                <View style={desktopStyles.goldDot} />
+                <Text style={desktopStyles.superTitle}>FEATURED PROPERTY</Text>
               </View>
-              
-              <Text style={[desktopStyles.mainTitle, { color: Neutrals.white }]}>
-                Extraordinary{'\n'}Spaces,{'\n'}
+              <Text style={desktopStyles.mainTitle}>
+                Extraordinary Spaces,{'\n'}
                 <Text style={{ color: GoldSystem.primaryGold }}>Real Possibilities.</Text>
               </Text>
-              
-              <Text style={[desktopStyles.subtitle, { color: Neutrals.gray300 }]}>
-                Handpicked properties that combine lifestyle, location and long-term value.
-              </Text>
+            </View>
 
-              <View style={desktopStyles.controlsRow}>
-                <TouchableOpacity onPress={handlePrev} style={desktopStyles.controlBtn}>
-                  <Ionicons name="chevron-back" size={20} color={Neutrals.white} />
+            {/* Glassmorphism Property Card */}
+            <View style={desktopStyles.glassCard}>
+              <View style={desktopStyles.glassCardTop}>
+                <View style={desktopStyles.mainBadge}>
+                  <Ionicons name="star" size={12} color={GoldSystem.primaryGold} style={{ marginRight: 6 }} />
+                  <Text style={desktopStyles.mainBadgeText}>PREMIUM COLLECTION</Text>
+                </View>
+                <View style={desktopStyles.locationRow}>
+                  <Ionicons name="location-outline" size={16} color={Neutrals.gray200} />
+                  <Text style={desktopStyles.locationText}>{activeSlide.locality}, {activeSlide.district}</Text>
+                </View>
+                <Text style={desktopStyles.cardTitle}>{activeSlide.title}</Text>
+                
+                <View style={desktopStyles.amenitiesRow}>
+                  {!!activeSlide.bedrooms && <View style={desktopStyles.amenityItem}><Ionicons name="bed-outline" size={18} color={Neutrals.gray200}/><Text style={desktopStyles.amenityText}>{activeSlide.bedrooms} Beds</Text></View>}
+                  {!!activeSlide.bathrooms && <View style={desktopStyles.amenityItem}><Ionicons name="water-outline" size={18} color={Neutrals.gray200}/><Text style={desktopStyles.amenityText}>{activeSlide.bathrooms} Baths</Text></View>}
+                  {!!activeSlide.area_sqft && <View style={desktopStyles.amenityItem}><Ionicons name="expand-outline" size={18} color={Neutrals.gray200}/><Text style={desktopStyles.amenityText}>{activeSlide.area_sqft} Sq.Ft</Text></View>}
+                </View>
+              </View>
+              
+              <View style={desktopStyles.glassCardBottom}>
+                <View>
+                  <Text style={desktopStyles.priceLabel}>Offered At</Text>
+                  <Text style={desktopStyles.priceText}>{getPriceDisplay(activeSlide)}</Text>
+                </View>
+                <TouchableOpacity style={desktopStyles.viewBtn} onPress={() => router.push(`/property/${activeSlide.id}` as any)}>
+                  <Text style={desktopStyles.viewBtnText}>Explore Details</Text>
+                  <Ionicons name="arrow-forward" size={18} color={Neutrals.obsidian} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleNext} style={desktopStyles.controlBtn}>
-                  <Ionicons name="chevron-forward" size={20} color={Neutrals.white} />
-                </TouchableOpacity>
-                <Text style={[desktopStyles.paginationText, { color: Neutrals.gray300 }]}>
-                  <Text style={{ color: GoldSystem.primaryGold, fontWeight: '700' }}>
-                    {String(activeIndex + 1).padStart(2, '0')}
-                  </Text>
+              </View>
+            </View>
+
+            {/* Modern Controls */}
+            <View style={desktopStyles.controlsRow}>
+              <TouchableOpacity onPress={handlePrev} style={desktopStyles.controlBtn}>
+                <Ionicons name="arrow-back" size={24} color={Neutrals.white} />
+              </TouchableOpacity>
+              <Text style={desktopStyles.paginationText}>
+                <Text style={{ color: Neutrals.white, fontWeight: '700' }}>
+                  {String(activeIndex + 1).padStart(2, '0')}
+                </Text>
+                <Text style={{ color: Neutrals.gray400 }}>
                   {' '}/ {String(slides.length).padStart(2, '0')}
                 </Text>
-              </View>
-            </View>
-
-            {/* RIGHT COLUMN: PROPERTY INFO */}
-            <View style={desktopStyles.bannerRight}>
-              <View style={desktopStyles.mainBadge}>
-                <Ionicons name="star" size={12} color={GoldSystem.primaryGold} style={{ marginRight: 4 }} />
-                <Text style={desktopStyles.mainBadgeText}>FEATURED</Text>
-              </View>
-
-              <View style={desktopStyles.locationRow}>
-                <Ionicons name="location" size={16} color={Neutrals.white} />
-                <Text style={desktopStyles.locationText}>{activeSlide.locality}, {activeSlide.district}</Text>
-              </View>
-              
-              <Text style={desktopStyles.cardTitle}>{activeSlide.title}</Text>
-              
-              {!!activeSlide.description && (
-                <Text style={desktopStyles.cardDesc} numberOfLines={2}>
-                  {activeSlide.description}
-                </Text>
-              )}
-              
-              <View style={desktopStyles.amenitiesRow}>
-                {!!activeSlide.bedrooms && <View style={desktopStyles.amenityItem}><Ionicons name="bed-outline" size={16} color={Neutrals.white}/><Text style={desktopStyles.amenityText}>{activeSlide.bedrooms} Beds</Text></View>}
-                {!!activeSlide.bathrooms && <View style={desktopStyles.amenityItem}><Ionicons name="water-outline" size={16} color={Neutrals.white}/><Text style={desktopStyles.amenityText}>{activeSlide.bathrooms} Baths</Text></View>}
-                {!!activeSlide.area_sqft && <View style={desktopStyles.amenityItem}><Ionicons name="expand-outline" size={16} color={Neutrals.white}/><Text style={desktopStyles.amenityText}>{activeSlide.area_sqft} Sq.Ft</Text></View>}
-              </View>
-
-              <View style={[desktopStyles.mainCardAction, { marginTop: 32 }]}>
-                <Text style={desktopStyles.priceText}>{getPriceDisplay(activeSlide)}</Text>
-                <TouchableOpacity style={desktopStyles.viewBtn} onPress={() => router.push(`/property/${activeSlide.id}` as any)}>
-                  <Text style={desktopStyles.viewBtnText}>View Property</Text>
-                  <Ionicons name="arrow-forward" size={16} color={Neutrals.obsidian} />
-                </TouchableOpacity>
-              </View>
+              </Text>
+              <TouchableOpacity onPress={handleNext} style={desktopStyles.controlBtn}>
+                <Ionicons name="arrow-forward" size={24} color={Neutrals.white} />
+              </TouchableOpacity>
             </View>
           </View>
+
+          {/* RIGHT COLUMN: Pristine Image */}
+          <View style={desktopStyles.rightColumn}>
+            <View style={desktopStyles.heroImageWrapper}>
+              <Image source={{ uri: getImg(activeSlide) }} style={desktopStyles.heroImage} contentFit="cover" />
+              
+              {/* Optional secondary thumbnails overlaid */}
+              {activeSlide.images?.length > 1 && (
+                <View style={desktopStyles.thumbnailStack}>
+                  {activeSlide.images.slice(1, 4).map((img: any, i: number) => {
+                    const raw = typeof img === 'string' ? img : (img?.image_url || '');
+                    return (
+                      <View key={i} style={desktopStyles.smallThumbnail}>
+                        <Image source={{ uri: getFullImageUrl(raw) }} style={StyleSheet.absoluteFill} contentFit="cover" />
+                      </View>
+                    );
+                  })}
+                </View>
+              )}
+            </View>
+          </View>
+
         </View>
       </View>
     );
@@ -361,7 +392,7 @@ const desktopStyles = StyleSheet.create({
     overflow: 'hidden',
     ...(Platform.OS === 'web' ? { boxShadow: '0 24px 48px rgba(0,0,0,0.25)' } as any : { elevation: 10 }),
   },
-  bannerContent: {
+  layoutWrapper: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -370,51 +401,147 @@ const desktopStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 48,
+    paddingHorizontal: '8%',
+    paddingVertical: 64,
   },
-  bannerLeft: {
-    width: '40%',
+  leftColumn: {
+    width: '42%',
     justifyContent: 'center',
   },
-  bannerRight: {
-    width: '45%',
+  rightColumn: {
+    width: '52%',
+    alignItems: 'flex-end',
     justifyContent: 'center',
+  },
+  editorialHeader: {
+    marginBottom: 40,
   },
   headerTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
+  },
+  goldDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: GoldSystem.primaryGold,
+    marginRight: 12,
   },
   superTitle: {
     ...Typography.labelMedium,
-    color: GoldSystem.darkGold,
-    letterSpacing: 2,
-    marginRight: 16,
-  },
-  superTitleLine: {
-    height: 1,
-    backgroundColor: GoldSystem.primaryGold,
-    flex: 1,
-    opacity: 0.5,
+    color: GoldSystem.primaryGold,
+    letterSpacing: 3,
+    fontWeight: '700',
   },
   mainTitle: {
-    fontSize: 32,
-    lineHeight: 38,
-    fontWeight: '700',
+    fontSize: 48,
+    lineHeight: 56,
+    fontWeight: '800',
     color: Neutrals.white,
-    marginBottom: 16,
     fontFamily: Platform.OS === 'web' ? 'Georgia, "Times New Roman", serif' : undefined,
   },
-  subtitle: {
-    ...Typography.bodyMedium,
-    color: Neutrals.gray300,
-    marginBottom: 24,
-    lineHeight: 24,
+  glassCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    overflow: 'hidden',
+    ...(Platform.OS === 'web' ? { backdropFilter: 'blur(24px)' } as any : {}),
+  },
+  glassCardTop: {
+    padding: 32,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
+  },
+  glassCardBottom: {
+    padding: 24,
+    paddingHorizontal: 32,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+  },
+  mainBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(212, 175, 55, 0.15)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(212, 175, 55, 0.3)',
+  },
+  mainBadgeText: {
+    ...Typography.caption,
+    color: GoldSystem.primaryGold,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  locationText: {
+    ...Typography.labelMedium,
+    color: Neutrals.gray200,
+    marginLeft: 8,
+    letterSpacing: 0.5,
+  },
+  cardTitle: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: Neutrals.white,
+    marginBottom: 20,
+  },
+  amenitiesRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 24,
+  },
+  amenityItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  amenityText: {
+    ...Typography.labelMedium,
+    color: Neutrals.gray100,
+  },
+  priceLabel: {
+    ...Typography.caption,
+    color: Neutrals.gray400,
+    marginBottom: 4,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  priceText: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: Neutrals.white,
+  },
+  viewBtn: {
+    backgroundColor: GoldSystem.primaryGold,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  viewBtnText: {
+    ...Typography.labelMedium,
+    color: Neutrals.obsidian,
+    fontWeight: '700',
   },
   controlsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 32,
+    gap: 24,
   },
   controlBtn: {
     width: 48,
@@ -423,39 +550,40 @@ const desktopStyles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.1)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.2)',
   },
   paginationText: {
     ...Typography.labelLarge,
-    color: Neutrals.gray400,
-    marginLeft: 12,
+    letterSpacing: 2,
   },
-  mainBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)',
-    marginBottom: 20,
+  heroImageWrapper: {
+    width: '100%',
+    height: 520,
+    borderRadius: 32,
+    position: 'relative',
+    ...(Platform.OS === 'web' ? { boxShadow: '0 32px 64px rgba(0,0,0,0.4)' } as any : { elevation: 12 }),
   },
-  mainBadgeText: {
-    ...Typography.caption,
-    color: Neutrals.white,
-    fontWeight: '700',
-    letterSpacing: 1,
+  heroImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 32,
   },
-  playBtn: {
+  thumbnailStack: {
     position: 'absolute',
-    right: 32,
-    top: '50%',
-    transform: [{ translateY: -40 }],
-    alignItems: 'center',
+    bottom: -24,
+    left: -24,
+    flexDirection: 'row',
+    gap: 16,
+  },
+  smallThumbnail: {
+    width: 100,
+    height: 80,
+    borderRadius: 16,
+    borderWidth: 4,
+    borderColor: '#1E1E24',
+    overflow: 'hidden',
+    ...(Platform.OS === 'web' ? { boxShadow: '0 12px 24px rgba(0,0,0,0.3)' } as any : { elevation: 8 }),
   },
   playBtnCircle: {
     width: 64,
@@ -483,69 +611,7 @@ const desktopStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-end',
   },
-  mainCardInfo: {
-    flex: 1,
-    paddingRight: 16,
-  },
-  locationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  locationText: {
-    ...Typography.labelMedium,
-    color: Neutrals.gray200,
-    marginLeft: 4,
-  },
-  cardTitle: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: Neutrals.white,
-    marginBottom: 8,
-  },
-  cardDesc: {
-    ...Typography.bodyMedium,
-    color: Neutrals.gray300,
-    marginBottom: 20,
-  },
-  amenitiesRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 20,
-  },
-  amenityItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  amenityText: {
-    ...Typography.labelMedium,
-    color: Neutrals.white,
-  },
-  mainCardAction: {
-    alignItems: 'flex-end',
-  },
-  priceText: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: Neutrals.white,
-    marginBottom: 16,
-  },
-  viewBtn: {
-    backgroundColor: GoldSystem.primaryGold,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  viewBtnText: {
-    ...Typography.labelLarge,
-    color: Neutrals.obsidian,
-    fontWeight: '700',
-  },
-  
+
   rightCol: {
     width: '23%',
     height: '100%',
