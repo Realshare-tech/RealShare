@@ -33,15 +33,16 @@ export function LocalityCard({
       
       <View style={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.name} numberOfLines={1}>{name}</Text>
+          <View style={styles.titleRow}>
+            <Text style={styles.name} numberOfLines={1}>{name}</Text>
+            <View style={styles.rankBadge}>
+              <Text style={styles.rankText}>#{rank}</Text>
+            </View>
+          </View>
           <View style={styles.ratingContainer}>
             <Text style={styles.star}>★</Text>
             <Text style={styles.rating}>{rating}</Text>
           </View>
-        </View>
-
-        <View style={styles.rankBadge}>
-          <Text style={styles.rankText}>#{rank} in City</Text>
         </View>
 
         <View style={styles.statsRow}>
@@ -49,14 +50,15 @@ export function LocalityCard({
             <Text style={styles.statLabel}>Avg. Price</Text>
             <Text style={styles.statValue}>{avgSale}</Text>
           </View>
-          <View style={styles.statDivider} />
           <View style={styles.statBox}>
-            <Text style={styles.statLabel}>Avg. Yield</Text>
+            <Text style={styles.statLabel}>Yield</Text>
             <Text style={styles.statValue}>{avgRent}</Text>
           </View>
+          <View style={[styles.statBox, { alignItems: 'flex-end' }]}>
+            <Text style={styles.statLabel}>Available</Text>
+            <Text style={[styles.statValue, { color: GoldSystem.primaryGold }]}>{propertyCount}</Text>
+          </View>
         </View>
-
-        <Text style={styles.propertyCount}>{propertyCount} properties available</Text>
       </View>
     </PremiumCard>
   );
@@ -83,10 +85,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 6,
   },
+  titleRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 8,
+  },
   name: {
     ...Typography.headlineMedium,
     color: Neutrals.obsidian,
-    flex: 1,
+    flexShrink: 1,
     marginRight: 8,
   },
   ratingContainer: {
@@ -108,11 +116,9 @@ const styles = StyleSheet.create({
   },
   rankBadge: {
     backgroundColor: GoldSystem.paleGold,
-    alignSelf: 'flex-start',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
     borderRadius: Radius.sm,
-    marginBottom: 10,
   },
   rankText: {
     ...Typography.caption,
@@ -124,8 +130,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Neutrals.gray100,
     borderRadius: Radius.md,
-    padding: 10,
-    marginBottom: 10,
+    padding: 8,
+    marginTop: 2,
   },
   statBox: {
     flex: 1,
