@@ -137,7 +137,16 @@ function PropertyCardInner({
         {price ? (
           <View style={styles.headerRow}>
             <View style={styles.priceContainer}>
-              <Text style={styles.price}>{price}</Text>
+              {price.includes(' / ') ? (
+                <Text style={styles.price}>
+                  {price.split(' / ')[0]}
+                  <Text style={{ fontSize: 14, color: Neutrals.textSecondary, fontWeight: '500' }}>
+                    {' / '}{price.split(' / ')[1]}
+                  </Text>
+                </Text>
+              ) : (
+                <Text style={styles.price}>{price}</Text>
+              )}
             </View>
             <View style={styles.scoreBadge}>
               <Text style={styles.scoreText}>{score}</Text>

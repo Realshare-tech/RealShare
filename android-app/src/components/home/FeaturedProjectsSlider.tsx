@@ -305,7 +305,20 @@ export function FeaturedProjectsSlider({ properties }: FeaturedProjectsSliderPro
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <View>
-              <Text style={{ fontSize: 14, fontWeight: '700', color: '#D4AF37' }}>{getPriceDisplay(activeMobileSlide)}</Text>
+              {(() => {
+                const priceStr = getPriceDisplay(activeMobileSlide);
+                if (priceStr.includes(' / ')) {
+                  return (
+                    <Text style={{ fontSize: 14, fontWeight: '700', color: '#D4AF37' }}>
+                      {priceStr.split(' / ')[0]}
+                      <Text style={{ fontSize: 10, color: '#D4AF37', fontWeight: '500' }}>
+                        {' / '}{priceStr.split(' / ')[1]}
+                      </Text>
+                    </Text>
+                  );
+                }
+                return <Text style={{ fontSize: 14, fontWeight: '700', color: '#D4AF37' }}>{priceStr}</Text>;
+              })()}
               <Text style={{ fontSize: 8, color: Neutrals.gray500 }}>Starting Price</Text>
             </View>
             <TouchableOpacity 
