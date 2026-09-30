@@ -22,79 +22,66 @@ export function RecentActivity() {
       <View style={styles.buttonContainer}>
         
         {/* 1. Recently Viewed Button */}
-        <View style={styles.expandableCard}>
-          <TouchableOpacity 
-            style={styles.actionButton} 
-            onPress={() => setShowViews(!showViews)}
-            activeOpacity={0.7}
-          >
-            <View style={[styles.iconBg, { backgroundColor: '#F5F3FF' }]}>
-              <Ionicons name="eye-outline" size={18} color="#8B5CF6" />
-            </View>
-            <View style={styles.buttonTextContent}>
-              <Text style={styles.buttonTitle}>Recently Viewed</Text>
-              <Text style={styles.buttonSubtitle}>
-                {recentViews.length > 0 ? `View your ${recentViews.length} past properties` : 'No recent properties'}
-              </Text>
-            </View>
-            <Ionicons name={showViews ? "chevron-down" : "chevron-forward"} size={16} color={Neutrals.gray400} />
-          </TouchableOpacity>
-          
-          {showViews && recentViews.length > 0 && (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.thumbnailSequence}>
-              {recentViews.map((p) => {
-                const imageUrl = p.image_url 
-                  ? (p.image_url.startsWith('/') ? `${getApiUrl()}${p.image_url}` : p.image_url) 
-                  : null;
-
-                return (
-                  <TouchableOpacity 
-                    key={p.id} 
-                    style={styles.thumbnailCard}
-                    onPress={() => router.push(`/property/${p.id}` as any)}
-                  >
-                    {imageUrl ? (
-                      <Image source={{ uri: imageUrl }} style={styles.thumbnailImage} />
-                    ) : (
-                      <View style={[styles.thumbnailImage, { backgroundColor: Neutrals.gray100, justifyContent: 'center', alignItems: 'center' }]}>
-                        <Ionicons name="image-outline" size={16} color={Neutrals.gray400} />
-                      </View>
-                    )}
-                    <Text style={styles.thumbnailTitle} numberOfLines={1}>{p.title}</Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-          )}
-        </View>
+        <TouchableOpacity 
+          style={styles.actionCard} 
+          onPress={() => setShowViews(!showViews)}
+          activeOpacity={0.7}
+        >
+          <View style={[styles.iconBg, { backgroundColor: '#F5F3FF' }]}>
+            <Ionicons name="eye-outline" size={16} color="#8B5CF6" />
+          </View>
+          <Text style={styles.actionText}>Recently Viewed</Text>
+          <Ionicons name={showViews ? "chevron-down" : "chevron-forward"} size={14} color={Neutrals.gray400} />
+        </TouchableOpacity>
 
         {/* 2. Continue Search Button */}
-        <View style={styles.expandableCard}>
-          <TouchableOpacity 
-            style={styles.actionButton} 
-            onPress={() => {
-              if (recentSearches.length > 0) {
-                router.push(`/(tabs)/search?q=${recentSearches[0].query}` as any);
-              } else {
-                router.push('/(tabs)/search');
-              }
-            }}
-            activeOpacity={0.7}
-          >
-            <View style={[styles.iconBg, { backgroundColor: '#EFF6FF' }]}>
-              <Ionicons name="search-outline" size={18} color="#3B82F6" />
-            </View>
-            <View style={styles.buttonTextContent}>
-              <Text style={styles.buttonTitle}>Continue with last search</Text>
-              <Text style={styles.buttonSubtitle}>
-                {recentSearches.length > 0 ? `Search for "${recentSearches[0].query}"` : 'Start a new search'}
-              </Text>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={Neutrals.gray400} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity 
+          style={styles.actionCard} 
+          onPress={() => {
+            if (recentSearches.length > 0) {
+              router.push(`/(tabs)/search?q=${recentSearches[0].query}` as any);
+            } else {
+              router.push('/(tabs)/search');
+            }
+          }}
+          activeOpacity={0.7}
+        >
+          <View style={[styles.iconBg, { backgroundColor: '#EFF6FF' }]}>
+            <Ionicons name="search-outline" size={16} color="#3B82F6" />
+          </View>
+          <Text style={styles.actionText}>Last Search</Text>
+          <Ionicons name="chevron-forward" size={14} color={Neutrals.gray400} />
+        </TouchableOpacity>
 
       </View>
+
+      {/* Expandable Views */}
+      {showViews && recentViews.length > 0 && (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.thumbnailSequence}>
+          {recentViews.map((p) => {
+            const imageUrl = p.image_url 
+              ? (p.image_url.startsWith('/') ? `${getApiUrl()}${p.image_url}` : p.image_url) 
+              : null;
+
+            return (
+              <TouchableOpacity 
+                key={p.id} 
+                style={styles.thumbnailCard}
+                onPress={() => router.push(`/property/${p.id}` as any)}
+              >
+                {imageUrl ? (
+                  <Image source={{ uri: imageUrl }} style={styles.thumbnailImage} />
+                ) : (
+                  <View style={[styles.thumbnailImage, { backgroundColor: Neutrals.gray100, justifyContent: 'center', alignItems: 'center' }]}>
+                    <Ionicons name="image-outline" size={16} color={Neutrals.gray400} />
+                  </View>
+                )}
+                <Text style={styles.thumbnailTitle} numberOfLines={1}>{p.title}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      )}
 
     </View>
   );
@@ -107,45 +94,39 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     paddingHorizontal: 16,
+    flexDirection: 'row',
     gap: 8,
   },
-  expandableCard: {
+  actionCard: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Neutrals.white,
     borderRadius: Radius.md,
     ...Shadows.sm,
     borderWidth: 1,
     borderColor: Neutrals.gray100,
-    overflow: 'hidden',
-  },
-  actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
   },
   iconBg: {
-    width: 36,
-    height: 36,
-    borderRadius: Radius.sm,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: 8,
   },
-  buttonTextContent: {
+  actionText: {
     flex: 1,
-  },
-  buttonTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: Neutrals.obsidian,
-    marginBottom: 0,
-  },
-  buttonSubtitle: {
-    fontSize: 11,
-    color: Neutrals.gray500,
   },
   thumbnailSequence: {
     paddingHorizontal: 16,
-    paddingBottom: 16,
+    paddingTop: 12,
+    paddingBottom: 4,
     gap: 12,
   },
   thumbnailCard: {
