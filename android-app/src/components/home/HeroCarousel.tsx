@@ -163,11 +163,13 @@ export function HeroCarousel() {
               }]}>
                 <Text style={[styles.title, isWide && styles.titleDesktop]}>{slide.title}</Text>
                 {!!slide.subtitle && <Text style={[styles.subtitle, isWide && styles.subtitleDesktop]}>{slide.subtitle}</Text>}
-                <GoldButton
-                  title="Explore Properties"
-                  onPress={() => router.push((slide.link_url || '/search') as any)}
-                  style={styles.button}
-                />
+                <View style={!isWide ? styles.mobileButtonWrapper : undefined}>
+                  <GoldButton
+                    title="Explore Properties"
+                    onPress={() => router.push((slide.link_url || '/search') as any)}
+                    style={styles.button}
+                  />
+                </View>
               </Animated.View>
             )}
           </View>
@@ -230,9 +232,9 @@ const styles = StyleSheet.create({
     right: 20,
   },
   title: {
-    ...Typography.displayLarge,
+    ...Typography.headlineLarge,
     color: Neutrals.white,
-    marginBottom: 8,
+    marginBottom: 6,
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
@@ -242,9 +244,9 @@ const styles = StyleSheet.create({
     lineHeight: 56,
   },
   subtitle: {
-    ...Typography.bodyLarge,
+    ...Typography.bodyMedium,
     color: Neutrals.gray200,
-    marginBottom: 24,
+    marginBottom: 16,
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
@@ -255,6 +257,11 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 200,
+  },
+  mobileButtonWrapper: {
+    transform: [{ scale: 0.85 }],
+    alignItems: 'flex-start',
+    marginLeft: -15, // Compenseate for scale shift
   },
   pagination: {
     position: 'absolute',
