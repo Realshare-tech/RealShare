@@ -102,7 +102,7 @@ function PropertyCardInner({
 
   return (
     <PremiumCard style={[styles.card, compact && styles.compactCard, compact && !isDesktop && { width: compactWidth }, compact && isDesktop && styles.compactCardDesktop] as any} onPress={() => router.push(`/property/${id}` as any)}>
-      <View style={styles.imageContainer}>
+      <View style={[styles.imageContainer, compact && styles.compactImageContainer, compact && isDesktop && styles.compactImageContainerDesktop]}>
         <Image
           source={{ uri: heroImage }}
           style={[styles.image, compact && styles.compactImage, compact && isDesktop && styles.compactImageDesktop]}
@@ -239,6 +239,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     position: 'relative',
+  },
+  compactImageContainer: {
+    height: 160,
+  },
+  compactImageContainerDesktop: {
+    height: 180,
   },
   image: {
     width: '100%',
