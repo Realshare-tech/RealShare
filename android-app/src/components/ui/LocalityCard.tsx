@@ -70,18 +70,18 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 120,
+    height: 180,
     borderTopLeftRadius: Radius.lg,
     borderTopRightRadius: Radius.lg,
   },
   content: {
-    padding: 16,
+    padding: 12,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   name: {
     ...Typography.headlineMedium,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: Radius.sm,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   rankText: {
     ...Typography.caption,
@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Neutrals.gray100,
     borderRadius: Radius.md,
-    padding: 12,
-    marginBottom: 12,
+    padding: 10,
+    marginBottom: 10,
   },
   statBox: {
     flex: 1,
