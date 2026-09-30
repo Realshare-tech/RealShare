@@ -20,6 +20,7 @@ interface GoldButtonProps {
   isLoading?: boolean;
   disabled?: boolean;
   icon?: React.ReactNode;
+  containerStyle?: ViewStyle;
 }
 
 export function GoldButton({
@@ -31,6 +32,7 @@ export function GoldButton({
   isLoading = false,
   disabled = false,
   icon,
+  containerStyle,
 }: GoldButtonProps) {
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
 
@@ -111,6 +113,7 @@ export function GoldButton({
           styles.container,
           getContainerStyle(),
           disabled && { opacity: 0.6 },
+          containerStyle,
         ]}
       >
         {isPrimary && !disabled ? (
@@ -118,7 +121,7 @@ export function GoldButton({
             colors={GoldSystem.goldGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={[styles.gradient, styles.container]}
+            style={[styles.gradient, styles.container, containerStyle]}
           >
             <ButtonContent />
           </LinearGradient>

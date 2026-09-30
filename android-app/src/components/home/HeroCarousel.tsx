@@ -163,11 +163,12 @@ export function HeroCarousel() {
               }]}>
                 <Text style={[styles.title, isWide && styles.titleDesktop]}>{slide.title}</Text>
                 {!!slide.subtitle && <Text style={[styles.subtitle, isWide && styles.subtitleDesktop]}>{slide.subtitle}</Text>}
-                <View style={!isWide ? styles.mobileButtonWrapper : undefined}>
+                <View style={{ marginTop: 4 }}>
                   <GoldButton
                     title="Explore"
                     onPress={() => router.push((slide.link_url || '/search') as any)}
-                    style={[styles.button, isWide && styles.buttonDesktop]}
+                    containerStyle={isWide ? styles.buttonDesktop : styles.buttonMobile}
+                    textStyle={!isWide ? { fontSize: 13 } : undefined}
                   />
                 </View>
               </Animated.View>
@@ -255,17 +256,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 32,
   },
-  button: {
-    width: 180,
+  buttonMobile: {
+    width: 140,
+    height: 34,
+    paddingHorizontal: 0,
   },
   buttonDesktop: {
     width: 200,
-  },
-  mobileButtonWrapper: {
-    transform: [{ scale: 0.6 }],
-    alignItems: 'flex-start',
-    marginLeft: -36, 
-    marginTop: -8,
+    height: 48,
   },
   pagination: {
     position: 'absolute',
