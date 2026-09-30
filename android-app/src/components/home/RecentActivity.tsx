@@ -168,8 +168,9 @@ const styles = StyleSheet.create({
   },
   buttonContainerDesktop: {
     paddingHorizontal: 16,
+    flexDirection: 'row',
     gap: 12,
-    maxWidth: 500,
+    maxWidth: 700,
   },
   buttonContainerMobile: {
     paddingHorizontal: 16,
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   expandableCardDesktop: {
+    flex: 1,
     backgroundColor: Neutrals.white,
     borderRadius: Radius.lg,
     ...Shadows.md,
