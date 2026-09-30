@@ -282,10 +282,10 @@ export function FeaturedPropertiesSlider({ properties }: FeaturedPropertiesSlide
           </Text>
           <Text style={styles.priceTextMobile}>{getPriceDisplay(activeMobileSlide)}</Text>
           <TouchableOpacity 
-            style={desktopStyles.viewBtn} 
+            style={styles.mobileViewBtn} 
             onPress={() => router.push(`/property/${activeMobileSlide.id}` as any)}>
-            <Text style={desktopStyles.viewBtnText}>View Property</Text>
-            <Ionicons name="arrow-forward" size={16} color={Neutrals.obsidian} />
+            <Text style={styles.mobileViewBtnText}>View Property</Text>
+            <Ionicons name="arrow-forward" size={14} color={Neutrals.obsidian} />
           </TouchableOpacity>
         </View>
       </View>
@@ -345,20 +345,20 @@ const styles = StyleSheet.create({
     right: 16,
   },
   title: {
-    ...Typography.displaySmall,
+    ...Typography.titleMedium,
     color: Neutrals.white,
     marginBottom: 4,
   },
   subtitle: {
-    ...Typography.bodyMedium,
+    ...Typography.caption,
     color: Neutrals.gray300,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   priceTextMobile: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: '700',
     color: Neutrals.white,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   mobileSuperTitle: {
     ...Typography.labelMedium,
@@ -383,6 +383,21 @@ const styles = StyleSheet.create({
   mobileStatItem: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  mobileViewBtn: {
+    backgroundColor: GoldSystem.primaryGold,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: 6,
+  },
+  mobileViewBtnText: {
+    ...Typography.labelMedium,
+    color: Neutrals.obsidian,
+    fontWeight: '700',
   },
 });
 
