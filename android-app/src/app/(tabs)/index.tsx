@@ -320,7 +320,7 @@ export default function HomeScreen() {
 
         {/* 2. Hot Selling Projects */}
         <View style={styles.featuredSection}>
-          <SectionHeader title="Hot Selling Projects" onViewAll={() => router.push('/(tabs)/search')} />
+          <SectionHeader title="Hot Selling Projects" onViewAll={() => router.push('/collections/hot-selling')} />
           <ResponsiveRail contentContainerStyle={styles.featuredScroll}>
             {hotProperties.map((prop) => (
               <PropertyCard key={prop.id} {...propertyToCardProps(prop)} compact />
@@ -336,7 +336,7 @@ export default function HomeScreen() {
 
         {/* 5. Resale Properties */}
         <View style={styles.featuredSection}>
-          <SectionHeader title="Resale Properties" onViewAll={() => router.push('/(tabs)/search')} />
+          <SectionHeader title="Resale Properties" onViewAll={() => router.push('/collections/resale')} />
           {resaleProperties.length > 0 ? (
             <ResponsiveRail contentContainerStyle={styles.featuredScroll}>
               {resaleProperties.map((prop) => (
@@ -354,7 +354,7 @@ export default function HomeScreen() {
         
         {/* 6. Rental */}
         <View style={styles.featuredSection}>
-          <SectionHeader title="Properties for Rent" onViewAll={() => router.push('/(tabs)/search')} />
+          <SectionHeader title="Properties for Rent" onViewAll={() => router.push('/collections/rent')} />
           {rentalProperties.length > 0 ? (
             <ResponsiveRail contentContainerStyle={styles.featuredScroll}>
               {rentalProperties.map((prop) => (

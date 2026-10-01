@@ -18,7 +18,7 @@ export function HotProjects({ properties }: HotProjectsProps) {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title="Projects in Hyderabad" onViewAll={() => router.push('/(tabs)/search')} />
+      <SectionHeader title="Projects in Hyderabad" onViewAll={() => router.push('/collections/hyderabad-projects')} />
       <ResponsiveRail contentContainerStyle={styles.scrollContent}>
         {properties.map((prop) => (
           <PropertyCard key={prop.id} {...propertyToCardProps(prop)} compact />

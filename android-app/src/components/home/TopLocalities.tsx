@@ -53,7 +53,7 @@ export function TopLocalities({ properties }: TopLocalitiesProps) {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title="Top Localities" onViewAll={() => router.push('/(tabs)/search')} />
+      <SectionHeader title="Top Localities" onViewAll={() => router.push('/map-search')} />
       <ResponsiveRail contentContainerStyle={styles.scrollContent}>
         {localities.map((locality) => (
           <LocalityCard key={locality.id} {...locality} />

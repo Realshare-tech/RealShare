@@ -38,7 +38,7 @@ export function TopDevelopers() {
 
   return (
     <View style={styles.container}>
-      <SectionHeader title="Featured Developers" onViewAll={() => router.push('/(tabs)/search')} />
+      <SectionHeader title="Featured Developers" onViewAll={() => router.push('/developers')} />
       {isDesktop ? (
         <View style={styles.desktopGrid}>
           {developers.map((dev) => (
